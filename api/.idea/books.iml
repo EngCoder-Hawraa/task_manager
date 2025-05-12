@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/PhpWord/Shared" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/PhpWord/Style" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/PhpWord/Escaper" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/PhpWord/Exception" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/PhpWord/Collection" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/PhpWord/Metadata" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/phpoffice/phpword" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/PhpWord/ComplexType" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/laminas/laminas-escaper" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/PhpWord/Reader" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/PhpWord/resources" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/PhpWord/Element" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/PhpWord/SimpleType" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/PhpWord/Writer" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/ezyang/htmlpurifier" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/endroid/qr-code" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/bacon/bacon-qr-code" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/dasprid/enum" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpoffice/math" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpoffice/phpword" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/bacon/bacon-qr-code" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/dasprid/enum" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/endroid/qr-code" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

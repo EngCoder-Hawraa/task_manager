@@ -1,0 +1,17 @@
+{
+    "name": "hp/app",
+    "autoload": {
+        "psr-4": {
+            "Hp\\App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "y"
+        }
+    ],
+    "require": {
+        "firebase/php-jwt": "^6.11",
+        "vlucas/phpdotenv": "^5.6"
+    }
+}

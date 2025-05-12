@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MessDetectorOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+  <component name="PHPCSFixerOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+  <component name="PHPCodeSnifferOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+  <component name="PhpIncludePathManager">
+    <include_path>
+      <path value="$PROJECT_DIR$/vendor/composer" />
+      <path value="$PROJECT_DIR$/vendor/phpoffice/phpword" />
+      <path value="$PROJECT_DIR$/vendor/phpoffice/math" />
+      <path value="$PROJECT_DIR$/app/vendor/bacon/bacon-qr-code" />
+      <path value="$PROJECT_DIR$/app/vendor/endroid/qr-code" />
+      <path value="$PROJECT_DIR$/app/vendor/dasprid/enum" />
+      <path value="$PROJECT_DIR$/app/vendor/PhpWord/Escaper" />
+      <path value="$PROJECT_DIR$/app/vendor/PhpWord/Style" />
+      <path value="$PROJECT_DIR$/app/vendor/PhpWord/Shared" />
+      <path value="$PROJECT_DIR$/app/vendor/PhpWord/Metadata" />
+      <path value="$PROJECT_DIR$/app/vendor/PhpWord/Collection" />
+      <path value="$PROJECT_DIR$/app/vendor/PhpWord/Exception" />
+      <path value="$PROJECT_DIR$/app/vendor/composer" />
+      <path value="$PROJECT_DIR$/app/vendor/PhpWord/ComplexType" />
+      <path value="$PROJECT_DIR$/app/vendor/phpoffice/phpword" />
+      <path value="$PROJECT_DIR$/app/vendor/PhpWord/Element" />
+      <path value="$PROJECT_DIR$/app/vendor/PhpWord/resources" />
+      <path value="$PROJECT_DIR$/app/vendor/PhpWord/Reader" />
+      <path value="$PROJECT_DIR$/app/vendor/laminas/laminas-escaper" />
+      <path value="$PROJECT_DIR$/app/vendor/ezyang/htmlpurifier" />
+      <path value="$PROJECT_DIR$/app/vendor/PhpWord/Writer" />
+      <path value="$PROJECT_DIR$/app/vendor/PhpWord/SimpleType" />
+      <path value="$PROJECT_DIR$/vendor/bacon/bacon-qr-code" />
+      <path value="$PROJECT_DIR$/vendor/endroid/qr-code" />
+      <path value="$PROJECT_DIR$/vendor/dasprid/enum" />
+    </include_path>
+  </component>
+  <component name="PhpProjectSharedConfiguration" php_language_level="7.0">
+    <option name="suggestChangeDefaultLanguageLevel" value="false" />
+  </component>
+  <component name="PhpStanOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+  <component name="PhpUnit">
+    <phpunit_settings>
+      <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/vendor/autoload.php" />
+    </phpunit_settings>
+  </component>
+  <component name="PsalmOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+</project>
