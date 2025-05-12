@@ -39,7 +39,7 @@ export const useAuthStore = defineStore('auth', {
         this.token = data.token
         this.user = data.user
         localStorage.setItem('token', data.token)
-        console.log(response);
+        // console.log(response);
 
         return data // ✅ هذا هو السطر المفقود
       } catch (err) {
