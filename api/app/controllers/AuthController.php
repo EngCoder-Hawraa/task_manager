@@ -2,8 +2,8 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../models/User.php';
-require_once __DIR__ . '/../helpers/jwt_helper.php';
-//require_once __DIR__ . '/../helpers/jwt_utils.php'; // ✅ استبدلنا jwt_helper بـ jwt_utils
+//require_once __DIR__ . '/../helpers/jwt_helper.php';
+require_once __DIR__ . '/../helpers/jwt_utils.php'; // ✅ استبدلنا jwt_helper بـ jwt_utils
 
 // تحميل .env عند الحاجة
 if (!isset($_ENV['JWT_SECRET_KEY'])) {
@@ -49,10 +49,57 @@ class AuthController
 
 
 //    باستخدام jwt_utils
+    public function login()
+    {
+        ob_start();
+        header('Content-Type: application/json; charset=utf-8');
+
+        $data = json_decode(file_get_contents("php://input"));
+
+        if (!$data || empty($data->email) || empty($data->password)) {
+            http_response_code(400);
+            ob_end_clean();
+            echo json_encode(['error' => 'يرجى إدخال البريد وكلمة المرور']);
+            return;
+        }
+
+        $user = $this->userModel->findByEmail($data->email);
+
+        if (!$user || !password_verify($data->password, $user->password)) {
+            http_response_code(401);
+            ob_end_clean();
+            echo json_encode(['error' => 'بيانات غير صحيحة']);
+            return;
+        }
+
+        $headers = ['alg' => 'HS256', 'typ' => 'JWT'];
+        $payload = [
+            'id' => $user->id,
+            'email' => $user->email,
+            'depId' => $user->dep_id ?? null,
+            'role' => $user->role ?? 'user',
+            'exp' => time() + 3600
+        ];
+
+        $secret = $_ENV['JWT_SECRET_KEY'] ?? 'secret';
+        $token = generate_jwt($headers, $payload, $secret);
+
+        ob_end_clean();
+        echo json_encode([
+            'message' => 'تم تسجيل الدخول بنجاح',
+            'token' => $token
+        ]);
+    }
+
+
+
+
+
+
+//    باستخدام jwt_helper
 //    public function login()
 //    {
-//        header('Content-Type: application/json; charset=utf-8'); // ✅ مهم جدًا
-//
+//        // استقبال البيانات
 //        $data = json_decode(file_get_contents("php://input"));
 //
 //        if (!$data || empty($data->email) || empty($data->password)) {
@@ -60,7 +107,7 @@ class AuthController
 //            echo json_encode(['error' => 'يرجى إدخال البريد وكلمة المرور']);
 //            return;
 //        }
-//
+//        // البحث عن المستخدم
 //        $user = $this->userModel->findByEmail($data->email);
 //
 //        if (!$user || !password_verify($data->password, $user->password)) {
@@ -69,61 +116,19 @@ class AuthController
 //            return;
 //        }
 //
-//        $headers = ['alg' => 'HS256', 'typ' => 'JWT'];
-//        $payload = [
-//            'id' => $user->id,
+//        // توليد التوكن JWT
+//        $token = generate_jwt([
+//            'user_id' => $user->id,
 //            'email' => $user->email,
-//            'depId' => $user->dep_id ?? null,
-//            'role' => $user->role ?? 'user',
-//            'exp' => time() + 3600
-//        ];
+//            'role' => $user->role ?? 'user'
+//        ]);
 //
-//        $secret = $_ENV['JWT_SECRET_KEY'] ?? 'secret';
-//
-//        $token = generate_jwt($headers, $payload, $secret);
-//
+//        // إرسال التوكن
 //        echo json_encode([
 //            'message' => 'تم تسجيل الدخول بنجاح',
 //            'token' => $token
 //        ]);
 //    }
-
-
-
-
-//    باستخدام jwt_helper
-    public function login()
-    {
-        // استقبال البيانات
-        $data = json_decode(file_get_contents("php://input"));
-
-        if (!$data || empty($data->email) || empty($data->password)) {
-            http_response_code(400);
-            echo json_encode(['error' => 'يرجى إدخال البريد وكلمة المرور']);
-            return;
-        }
-        // البحث عن المستخدم
-        $user = $this->userModel->findByEmail($data->email);
-
-        if (!$user || !password_verify($data->password, $user->password)) {
-            http_response_code(401);
-            echo json_encode(['error' => 'بيانات غير صحيحة']);
-            return;
-        }
-
-        // توليد التوكن JWT
-        $token = generate_jwt([
-            'user_id' => $user->id,
-            'email' => $user->email,
-            'role' => $user->role ?? 'user'
-        ]);
-
-        // إرسال التوكن
-        echo json_encode([
-            'message' => 'تم تسجيل الدخول بنجاح',
-            'token' => $token
-        ]);
-    }
 
 
 
