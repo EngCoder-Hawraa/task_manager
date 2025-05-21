@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
 
+axios.defaults.baseURL = 'http://localhost/task_manager/api/public'
+
 export const useTaskStore = defineStore('task', {
   state: () => ({
     tasks: [],
@@ -10,12 +12,20 @@ export const useTaskStore = defineStore('task', {
     token: localStorage.getItem('token') || ''
   }),
   actions: {
+    setToken(token) {
+      this.token = token
+      localStorage.setItem('token', token)
+    },
     async fetchTasks() {
+      this.loading = true
+      this.error = null
+      this.tasks = []
+
       try {
-        this.loading = true
-        const res = await axios.get('http://localhost/task_manager/api/public/index', {
+        const res = await axios.get('/index', {
           headers: { Authorization: `Bearer ${this.token}` }
         })
+
         this.tasks = res.data
       } catch (err) {
         this.error = err.response?.data?.message || err.message

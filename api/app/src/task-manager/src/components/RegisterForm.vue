@@ -139,7 +139,7 @@ const submit = async () => {
           confirmButton: 'swal2-confirm'
         }
       })
-      router.push('/dashboard')
+      router.push('/taskDashboard')
     } else {
       throw new Error(response.error || 'حدث خطأ أثناء التسجيل')
     }

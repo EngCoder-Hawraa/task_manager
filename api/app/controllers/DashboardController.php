@@ -23,7 +23,7 @@ class DashboardController
         }
 
         $jwt = trim(str_replace('Bearer', '', $headers['Authorization']));
-        $decoded = JWTHandler::validateToken($jwt);
+        $decoded = jwt_helper::validateToken($jwt);
 
         if (!$decoded || !isset($decoded->user_id)) {
             http_response_code(401);

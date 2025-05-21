@@ -1,9 +1,6 @@
 <template>
-  <v-container fluid>
     <AppHeader />
     <TaskList />
-  </v-container>
-
   <div>
     <v-row>
       <v-col cols="12" md="4">
@@ -55,7 +52,7 @@ import AddTask from "@/components/AddTask.vue";
 // const latestTasks = ref([])
 //
 // onMounted(async () => {
-//   const res = await fetch('http://localhost/task_manager/api/TaskDashboard.php', {
+//   const res = await fetch('http://localhost/task_manager/api/public/index', {
 //     headers: {
 //       Authorization: `Bearer ${localStorage.getItem('token')}`
 //     }

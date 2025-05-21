@@ -15,9 +15,9 @@ export const useAuthStore = defineStore('auth', {
           body: JSON.stringify(userData),
         })
         const data = await response.json()
-        // if (!response.ok) throw new Error(data.message || 'فشل التسجيل')
-        // this.token = data.token
-        // this.user = data.user
+        if (!response.ok) throw new Error(data.message || 'فشل التسجيل')
+        this.token = data.token
+        this.user = data.user
         // localStorage.setItem('token', data.token)
 
         return data // ✅ هذا هو السطر المفقود
