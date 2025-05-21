@@ -1,4 +1,9 @@
 <template>
+  <v-container fluid>
+    <AppHeader />
+    <TaskList />
+  </v-container>
+
   <div>
     <v-row>
       <v-col cols="12" md="4">
@@ -33,28 +38,35 @@
       </v-list-item>
     </v-list>
   </div>
+
+  <AddTask />
+
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import AppHeader from "@/components/AppHeader.vue";
+import TaskList from "@/components/TaskList.vue";
+import AddTask from "@/components/AddTask.vue";
+// import { ref, onMounted } from 'vue'
+//
+// const totalTasks = ref(0)
+// const completedTasks = ref(0)
+// const pendingTasks = ref(0)
+// const latestTasks = ref([])
+//
+// onMounted(async () => {
+//   const res = await fetch('http://localhost/task_manager/api/TaskDashboard.php', {
+//     headers: {
+//       Authorization: `Bearer ${localStorage.getItem('token')}`
+//     }
+//   })
+//
+//   const data = await res.json()
+//
+//   totalTasks.value = data.total
+//   completedTasks.value = data.completed
+//   pendingTasks.value = data.pending
+//   latestTasks.value = data.latest
+// })
 
-const totalTasks = ref(0)
-const completedTasks = ref(0)
-const pendingTasks = ref(0)
-const latestTasks = ref([])
-
-onMounted(async () => {
-  const res = await fetch('http://localhost/task_manager/api/dashboard.php', {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`
-    }
-  })
-
-  const data = await res.json()
-
-  totalTasks.value = data.total
-  completedTasks.value = data.completed
-  pendingTasks.value = data.pending
-  latestTasks.value = data.latest
-})
 </script>
