@@ -25,14 +25,14 @@
     <v-divider class="my-4" />
 
     <h3>آخر المهام:</h3>
-    <v-list>
-      <v-list-item v-for="task in latestTasks" :key="task.id">
-        <v-list-item-content>
-          <v-list-item-title>{{ task.title }}</v-list-item-title>
-          <v-list-item-subtitle>{{ task.status }}</v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
-    </v-list>
+<!--    <v-list>-->
+<!--      <v-list-item v-for="task in latestTasks" :key="task.id">-->
+<!--        <v-list-item-content>-->
+<!--          <v-list-item-title>{{ task.title }}</v-list-item-title>-->
+<!--          <v-list-item-subtitle>{{ task.status }}</v-list-item-subtitle>-->
+<!--        </v-list-item-content>-->
+<!--      </v-list-item>-->
+<!--    </v-list>-->
   </div>
 
   <TaskList v-if="isAuthenticated" />
