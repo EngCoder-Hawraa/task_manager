@@ -6,6 +6,10 @@ export const useAuthStore = defineStore('auth', {
     token: localStorage.getItem('token') || null,
   }),
 
+  getters: {
+    isAuthenticated: state => !!state.token
+  },
+
   actions: {
     async register(userData) {
       try {
@@ -29,12 +33,15 @@ export const useAuthStore = defineStore('auth', {
 
     async login({ email, password }) {
       try {
-        const response = await fetch('http://localhost/task_manager/api/public/login', {
+        const response = await fetch('http://localhost/task_manager/api/public/Auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password }),
         })
         const data = await response.json()
+        // console.log('يرسل إلى السيرفر:', { email, password });
+        // console.log('بيانات الاستجابة من السيرفر:', data)
+
         if (!response.ok) throw new Error(data.message || 'فشل تسجيل الدخول')
         this.token = data.token
         this.user = data.user

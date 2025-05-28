@@ -4,7 +4,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 // تحميل متغيرات البيئة
 if (!isset($_ENV['JWT_SECRET_KEY'])) {
-    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/app/');
     $dotenv->load();
 }
 

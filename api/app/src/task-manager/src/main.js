@@ -18,11 +18,6 @@ import { createPinia } from "pinia";
 import mitt from "mitt";
 const Emitter = mitt();
 
-// تكوين Swiper
-// import "swiper/css";
-// import "swiper/css/pagination";
-// import "swiper/css/navigation";
-
 // تكوين Vuetify
 import "vuetify/styles";
 import { createVuetify } from "vuetify";
@@ -31,11 +26,15 @@ import * as directives from "vuetify/directives";
 import { aliases, mdi } from "vuetify/iconsets/mdi"; // استخدام أيقونات Material Design
 import "@mdi/font/css/materialdesignicons.css";
 
+// تكوين Toastification
+import Toast, { POSITION } from 'vue-toastification';
+import 'vue-toastification/dist/index.css';
+
 const vuetify = createVuetify({
   components,
   directives,
   icons: {
-    defaultSet: "mdi", // التأكد من تعريف مجموعة الأيقونات الافتراضية
+    defaultSet: "mdi",
     aliases,
     sets: {
       mdi,
@@ -45,12 +44,23 @@ const vuetify = createVuetify({
 
 const app = createApp(App);
 
-// طريقة Composition API
+// تثبيت الحزم
 app.use(createPinia());
-app.provide("Emitter", Emitter); // توفير Emitter بشكل عام
-
+app.provide("Emitter", Emitter);
 app.use(router);
 app.use(vuetify);
 
-// تثبيت التطبيق
+// ✅ تفعيل Toastification
+app.use(Toast, {
+  position: POSITION.TOP_RIGHT,
+  timeout: 3000,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  showCloseButtonOnHover: false,
+  hideProgressBar: false,
+  closeButton: "button",
+  icon: true,
+});
+
 app.mount("#app");

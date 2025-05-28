@@ -6,7 +6,7 @@
  */
 class Core {
     // Set Defaults
-    protected $currentController = 'AuthController'; // Default controller
+    protected $currentController = 'Auth'; // Default controller
     protected $currentMethod = 'register'; // Default method
     protected $params = []; // Set initial empty params array
 
@@ -34,8 +34,10 @@ class Core {
             // Check to see if method exists in controller
             if (method_exists($this->currentController, $url[1])) {
                 $this->currentMethod = $url[1];
-                // Unset 1 index
                 unset($url[1]);
+            } else {
+                // عرض رسالة خطأ أو تعيين دالة افتراضية
+                die('Method does not exist: ' . $url[1]);
             }
         }
 
