@@ -54,16 +54,26 @@ export const useTaskStore = defineStore('task', {
     },
 
     async updateTask(id, updatedTask) {
+      // console.log('🧪 ID:', id)
       this.error = null
       try {
-        const res = await axios.put(`/update/${id}`, updatedTask, {
-          headers: { Authorization: `Bearer ${this.token}` }
-        })
+        const res = await axios.put(
+          `/update/${id}`,
+        updatedTask,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${this.token}`
+            }
+          }
+        )
         if (res.data.success) await this.fetchTasks()
       } catch (err) {
+        console.error(err)
         this.error = err.response?.data?.message || err.message
       }
     },
+
 
     async deleteTask(id) {
       this.error = null

@@ -10,6 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 require_once '../app/bootstrap.php';
+// 👇 بقية الكود — استدعاء الكونترولر مثلاً
 // Init Core Library
 $init = new Core;
 

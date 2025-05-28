@@ -92,20 +92,28 @@ const priorityLabels = {
   medium: 'متوسطة',
   high: 'عالية',
 }
-
+defineProps({
+  task: Object
+});
 const openEditDialog = (task) => {
   editTaskId.value = task.id
   editTitle.value = task.title
   editDescription.value = task.description
   editStatus.value = task.status === 'مكتملة' ? 'مكتملة' : 'مفتوحة'
   editPriority.value = priorityLabels[task.priority] || 'متوسطة'
-  editDueDate.value = task.due_date
+  editDueDate.value = formatDate(task.due_date) // ← استخدام الدالة الجديدة
   clearEditErrors()
   editDialog.value = true
 }
-defineProps({
-  task: Object
-});
+const formatDate = (date) => {
+  const d = new Date(date)
+  const year = d.getFullYear()
+  const month = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
+
 
 const clearEditErrors = () => {
   editTitleError.value = ''
@@ -156,14 +164,16 @@ const submitEditTask = async () => {
   }
 
   try {
-    await taskStore.updateTask({
-      id: editTaskId.value,
-      title: editTitle.value,
-      description: editDescription.value,
-      due_date: editDueDate.value,
-      status: statusToValue(editStatus.value),
-      priority: priorityToValue(editPriority.value),
-    })
+    await taskStore.updateTask(
+      editTaskId.value,
+      {
+        title: editTitle.value,
+        description: editDescription.value,
+        due_date: editDueDate.value,
+        status: statusToValue(editStatus.value),
+        priority: priorityToValue(editPriority.value),
+      }
+    )
 
     if (taskStore.error) {
       toast.error(`❌ حدث خطأ: ${taskStore.error}`)

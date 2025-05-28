@@ -5,6 +5,7 @@
  *  URL Format - /controller/method/param1/param2
  */
 class Core {
+
     // Set Defaults
     protected $currentController = 'Auth'; // Default controller
     protected $currentMethod = 'register'; // Default method
