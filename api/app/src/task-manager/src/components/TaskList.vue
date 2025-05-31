@@ -1,15 +1,21 @@
 <template>
   <v-container class="py-6">
     <v-row justify="center">
-      <v-col cols="12" md="8">
+      <v-col cols="12" md="11">
         <v-card class="pa-4" elevation="2">
 
           <!-- العنوان وزر إضافة مهمة -->
           <div class="d-flex justify-space-between align-center mb-4">
             <v-card-title class="text-h5">📝 قائمة المهام</v-card-title>
             <AddTask />
+            <v-btn
+              to="/calendar"
+              color="primary"
+              prepend-icon="mdi-calendar"
+            >
+              عرض التقويم
+            </v-btn>
           </div>
-
           <!-- فلترة حسب الحالة -->
           <v-btn-toggle
             v-model="filterStatus"
