@@ -49,7 +49,10 @@ class Dashboard
     public function index()
     {
         $userId = $this->getUserIdFromToken();
-        $tasks = $this->taskModel->getTasksByUser($userId);
+        // دعم فلترة حسب الحالة (status)
+        $status = $_GET['status'] ?? null;
+//        $tasks = $this->taskModel->getTasksByUser2($userId);
+        $tasks = $this->taskModel->getTasksByUser($userId, $status);
         echo json_encode($tasks);
     }
 

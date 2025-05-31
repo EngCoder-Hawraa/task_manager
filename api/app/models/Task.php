@@ -25,13 +25,26 @@ class Task
     }
 
     // جلب المهام حسب المستخدم
-    public function getTasksByUser($userId)
+    public function getTasksByUser2($userId)
     {
         $this->db->query("SELECT * FROM tasks WHERE user_id = :user_id AND deleted_at IS NULL ORDER BY due_date ASC");
         $this->db->bind(':user_id', $userId);
         return $this->db->resultSet();
     }
 
+    public function getTasksByUser($userId, $status = null)
+    {
+        if ($status && $status !== 'الكل') {
+            $this->db->query("SELECT * FROM tasks WHERE user_id = :user_id AND status = :status AND deleted_at IS NULL ORDER BY due_date ASC");
+            $this->db->bind(':user_id', $userId);
+            $this->db->bind(':status', $status);
+        } else {
+            $this->db->query("SELECT * FROM tasks WHERE user_id = :user_id AND deleted_at IS NULL ORDER BY due_date ASC");
+            $this->db->bind(':user_id', $userId);
+        }
+
+        return $this->db->resultSet();
+    }
     // جلب مهمة واحدة بالمعرف
     public function getTaskById($id)
     {

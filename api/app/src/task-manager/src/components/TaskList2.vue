@@ -3,28 +3,11 @@
     <v-row justify="center">
       <v-col cols="12" md="8">
         <v-card class="pa-4" elevation="2">
-
           <!-- العنوان وزر إضافة مهمة -->
           <div class="d-flex justify-space-between align-center mb-4">
             <v-card-title class="text-h5">📝 قائمة المهام</v-card-title>
             <AddTask />
           </div>
-
-          <!-- فلترة حسب الحالة -->
-          <v-btn-toggle
-            v-model="filterStatus"
-            class="mb-3"
-            color="primary"
-            dense
-            rounded
-            mandatory
-          >
-            <v-btn value="الكل">الكل</v-btn>
-            <v-btn value="مفتوحة">مفتوحة</v-btn>
-            <v-btn value="قيد التنفيذ">قيد التنفيذ</v-btn>
-            <v-btn value="مكتملة">مكتملة</v-btn>
-            <v-btn value="تم الإلغاء">تم الإلغاء</v-btn>
-          </v-btn-toggle>
 
           <v-divider class="my-3" />
 
@@ -38,18 +21,18 @@
 
           <!-- رسالة عدم وجود مهام -->
           <v-alert
-            v-else-if="filteredTasks.length === 0"
+            v-else-if="taskStore.tasks.length === 0"
             type="info"
             variant="tonal"
             class="text-center"
           >
-            لا توجد مهام حسب الفلتر الحالي.
+            لا توجد مهام حالياً.
           </v-alert>
 
           <!-- عرض المهام -->
           <v-row v-else dense>
             <v-col
-              v-for="task in filteredTasks"
+              v-for="task in taskStore.tasks"
               :key="task.id"
               cols="12"
               md="6"
@@ -75,21 +58,18 @@
                 </v-card-text>
 
                 <v-card-actions>
-                  <!-- زر "تم الإنجاز" يظهر فقط للمهام غير المكتملة -->
                   <v-btn
-                    v-if="task.status !== 'مكتملة'"
+                    v-if="['مكتملة'].includes(task.status)"
                     color="success"
                     size="small"
                     variant="flat"
-                    @click="markAsDone(task.id)"
+                    @click="taskStore.markAsDone(task.id)"
                   >
                     ✔ تم الإنجاز
                   </v-btn>
 
-                  <!-- زر تعديل المهمة -->
                   <EditTask :task="task" />
 
-                  <!-- زر حذف المهمة -->
                   <v-btn
                     color="error"
                     size="small"
@@ -102,7 +82,6 @@
               </v-card>
             </v-col>
           </v-row>
-
         </v-card>
       </v-col>
     </v-row>
@@ -111,7 +90,7 @@
 
 <script setup>
 import Swal from "sweetalert2";
-import { ref, computed, onMounted } from "vue";
+import { onMounted } from "vue";
 import { useToast } from "vue-toastification";
 import { useTaskStore } from "@/stores/taskStore";
 
@@ -120,9 +99,6 @@ import EditTask from "@/components/EditTask.vue";
 
 const taskStore = useTaskStore();
 const toast = useToast();
-
-// الحالة الافتراضية للفلتر (كل المهام)
-const filterStatus = ref("الكل");
 
 // خريطة ترجمة الحالة إلى اللون والنص
 const statusLabels = {
@@ -138,14 +114,6 @@ const priorityLabels = {
   medium: "متوسطة",
   high: "عالية",
 };
-
-// دالة لتصفية المهام حسب حالة الفلتر
-const filteredTasks = computed(() => {
-  if (filterStatus.value === "الكل") {
-    return taskStore.tasks;
-  }
-  return taskStore.tasks.filter(task => task.status === filterStatus.value);
-});
 
 // تحميل المهام عند تحميل المكون
 onMounted(() => {
@@ -172,7 +140,7 @@ const confirmDelete = async (id) => {
   }
 };
 
-// دالة تنسيق التاريخ إلى صيغة عربية
+// دالة لتنسيق التاريخ بصيغة عربية
 const formatDate = (dateString) => {
   if (!dateString) return "";
   const date = new Date(dateString);
@@ -181,15 +149,5 @@ const formatDate = (dateString) => {
     month: "long",
     day: "numeric",
   });
-};
-
-// دالة وضع المهمة كمكتملة (يمكن تعديلها حسب طريقة التخزين)
-const markAsDone = async (id) => {
-  try {
-    await taskStore.markAsDone(id);
-    toast.success("✅ تم تحديث حالة المهمة إلى مكتملة");
-  } catch (error) {
-    toast.error("❌ حدث خطأ أثناء تحديث الحالة");
-  }
 };
 </script>
