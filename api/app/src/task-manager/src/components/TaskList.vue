@@ -83,7 +83,7 @@
                 <v-card-actions>
                   <!-- زر "تم الإنجاز" يظهر فقط للمهام غير المكتملة -->
                   <v-btn
-                    v-if="task.status !== 'مكتملة'"
+                    v-if="task.status === 'مكتملة'"
                     color="success"
                     size="small"
                     variant="flat"
