@@ -43,10 +43,10 @@
                     <span>{{ task.title }}</span>
                     <v-chip
                       size="small"
-                      :color="task.status === 'مكتملة' ? 'green' : 'secondary'"
+                      :color="statusLabels[task.status]?.color || 'grey'"
                       class="text-white"
                     >
-                      {{ task.status }}
+                      {{ statusLabels[task.status]?.text || task.status }}
                     </v-chip>
                   </div>
                 </v-card-title>
@@ -99,6 +99,14 @@ import EditTask from "@/components/EditTask.vue";
 
 const taskStore = useTaskStore();
 const toast = useToast();
+
+// خريطة ترجمة الحالة إلى اللون والنص
+const statusLabels = {
+  "مفتوحة": { text: "مفتوحة", color: "blue" },
+  "قيد التنفيذ": { text: "قيد التنفيذ", color: "orange" },
+  "مكتملة": { text: "مكتملة", color: "green" },
+  "تم الإلغاء": { text: "تم الإلغاء", color: "red" },
+};
 
 // خريطة عرض الأولوية بالنص العربي
 const priorityLabels = {
