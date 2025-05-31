@@ -59,7 +59,7 @@
 
                 <v-card-actions>
                   <v-btn
-                    v-if="task.status !== 'مكتملة'"
+                    v-if="['مكتملة'].includes(task.status)"
                     color="success"
                     size="small"
                     variant="flat"

@@ -12,7 +12,7 @@
     <v-dialog v-model="editDialog" max-width="600">
       <v-card>
         <v-card-title class="text-h6 text-center">✏ تعديل المهمة</v-card-title>
-        <v-divider class="my-3"></v-divider>
+        <v-divider class="my-3" />
         <v-card-text>
           <v-form @submit.prevent="submitEditTask" ref="editFormRef">
             <v-text-field
@@ -65,9 +65,9 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useTaskStore } from '@/stores/taskStore'
-import { useToast } from 'vue-toastification'
+import {ref} from 'vue'
+import {useTaskStore} from '@/stores/taskStore'
+import {useToast} from 'vue-toastification'
 
 const editDialog = ref(false)
 const editTaskId = ref(null)
@@ -84,27 +84,52 @@ const editTitleError = ref('')
 const editDescriptionError = ref('')
 const editDueDateError = ref('')
 
-const statusOptions = ['مفتوحة', 'مكتملة']
+// خيارات الحقول
+const statusOptions = ['مفتوحة', 'قيد التنفيذ', 'مكتملة', 'تم الإلغاء']
 const priorityOptions = ['منخفضة', 'متوسطة', 'عالية']
+
+// تحويل القيم من النص العربي إلى قيمة مناسبة للـ backend
+const statusValueMap = {
+  'مفتوحة': 'مفتوحة',
+  'قيد التنفيذ': 'قيد التنفيذ',
+  'مكتملة': 'مكتملة',
+  'تم الإلغاء': 'تم الإلغاء',
+}
+
+const statusTextMap = {
+  open: 'مفتوحة',
+  in_progress: 'قيد التنفيذ',
+  completed: 'مكتملة',
+  cancelled: 'تم الإلغاء',
+}
+
+const priorityValueMap = {
+  'منخفضة': 'low',
+  'متوسطة': 'medium',
+  'عالية': 'high',
+}
 
 const priorityLabels = {
   low: 'منخفضة',
   medium: 'متوسطة',
   high: 'عالية',
 }
+
 defineProps({
-  task: Object
-});
+  task: Object,
+})
+
 const openEditDialog = (task) => {
   editTaskId.value = task.id
   editTitle.value = task.title
   editDescription.value = task.description
-  editStatus.value = task.status === 'مكتملة' ? 'مكتملة' : 'مفتوحة'
+  editDueDate.value = formatDate(task.due_date)
+  editStatus.value = statusTextMap[task.status] || 'مفتوحة'
   editPriority.value = priorityLabels[task.priority] || 'متوسطة'
-  editDueDate.value = formatDate(task.due_date) // ← استخدام الدالة الجديدة
   clearEditErrors()
   editDialog.value = true
 }
+
 const formatDate = (date) => {
   const d = new Date(date)
   const year = d.getFullYear()
@@ -112,8 +137,6 @@ const formatDate = (date) => {
   const day = String(d.getDate()).padStart(2, '0')
   return `${year}-${month}-${day}`
 }
-
-
 
 const clearEditErrors = () => {
   editTitleError.value = ''
@@ -141,21 +164,8 @@ const validateEditFields = () => {
   return valid
 }
 
-const statusToValue = (statusText) =>
-  statusText === 'مكتملة' ? 'مكتملة' : 'open'
-
-const priorityToValue = (priorityText) => {
-  switch (priorityText) {
-    case 'منخفضة':
-      return 'low'
-    case 'متوسطة':
-      return 'medium'
-    case 'عالية':
-      return 'high'
-    default:
-      return 'medium'
-  }
-}
+const statusToValue = (statusText) => statusValueMap[statusText] || 'open'
+const priorityToValue = (priorityText) => priorityValueMap[priorityText] || 'medium'
 
 const submitEditTask = async () => {
   if (!validateEditFields()) {
@@ -164,16 +174,13 @@ const submitEditTask = async () => {
   }
 
   try {
-    await taskStore.updateTask(
-      editTaskId.value,
-      {
-        title: editTitle.value,
-        description: editDescription.value,
-        due_date: editDueDate.value,
-        status: statusToValue(editStatus.value),
-        priority: priorityToValue(editPriority.value),
-      }
-    )
+    await taskStore.updateTask(editTaskId.value, {
+      title: editTitle.value,
+      description: editDescription.value,
+      due_date: editDueDate.value,
+      status: statusToValue(editStatus.value),
+      priority: priorityToValue(editPriority.value),
+    })
 
     if (taskStore.error) {
       toast.error(`❌ حدث خطأ: ${taskStore.error}`)
