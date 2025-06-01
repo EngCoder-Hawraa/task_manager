@@ -114,7 +114,7 @@ function editTask(task) {
 
 function statusLabel(status) {
   switch (status) {
-    case 'open':
+    case 'مفتوحة':
       return 'مفتوحة'
     case 'قيد التنفيذ':
       return 'قيد التنفيذ'
