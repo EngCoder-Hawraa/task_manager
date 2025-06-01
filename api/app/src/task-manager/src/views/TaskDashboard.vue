@@ -45,8 +45,8 @@
 import AppHeader from "@/components/AppHeader.vue";
 import TaskList from "@/components/TaskList.vue";
 import { onMounted, computed } from 'vue'
-import { useTaskStore } from '@/stores/taskStore'
-import { useAuthStore } from '@/stores/auth' // 🟡 استدعاء authStore
+import { useTaskStore } from '@/stores/taskStore.js'
+import { useAuthStore } from '@/stores/auth.js' // 🟡 استدعاء authStore
 import { useRouter } from 'vue-router'
 
 const router = useRouter()

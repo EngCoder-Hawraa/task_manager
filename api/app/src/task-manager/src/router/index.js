@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
-import TaskDashboard from '@/components/TaskDashboard.vue'
+import TaskDashboard from '@/views/TaskDashboard.vue'
 import CalendarView from "@/components/CalendarView.vue";
 import { useAuthStore } from '@/stores/auth' // ⭐ استدعاء authStore
 
