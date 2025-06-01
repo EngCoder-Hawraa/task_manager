@@ -2,7 +2,7 @@
   <AppHeader />
   <AppSidebar />
 
-  <v-container fluid class="py-6">
+  <v-container class="py-9">
     <v-row>
       <v-col cols="12">
         <!-- 🔹 عنوان الصفحة -->
