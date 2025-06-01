@@ -1,13 +1,12 @@
 <template>
+  <!-- ✅ رأس الصفحة -->
+  <AppHeader @toggle-sidebar="toggleDrawer" />
+
+  <!-- ✅ السايدبار -->
+  <AppSidebar ref="sidebarRef" />
   <v-app>
-    <!-- ✅ رأس الصفحة -->
-    <AppHeader @toggle-sidebar="toggleDrawer" />
-
-    <!-- ✅ السايدبار -->
-    <AppSidebar ref="sidebarRef" />
-
-     المحتوى الرئيسي
-      <v-main>
+    <v-slide-y-transition group>
+<!--      <v-main>-->
         <div class="pa-6">
           <h2>مرحبًا بك في التطبيق</h2>
           <div v-if="isAuthenticated" class="mt-7">
@@ -20,7 +19,8 @@
             </p>
           </div>
         </div>
-      </v-main>
+<!--      </v-main>-->
+    </v-slide-y-transition>
   </v-app>
 </template>
 

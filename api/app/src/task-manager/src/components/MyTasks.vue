@@ -1,6 +1,7 @@
 <template>
-  <AppHeader />
-  <AppSidebar />
+  <AppHeader @toggle-sidebar="toggleDrawer" />
+  <!-- ✅ السايدبار -->
+  <AppSidebar ref="sidebarRef" />
 
   <v-container class="py-9">
     <v-row>
@@ -92,6 +93,7 @@ import AppHeader from "@/components/AppHeader.vue"
 
 const taskStore = useTaskStore()
 const selectedStatus = ref('all')
+const sidebarRef = ref(null)
 
 onMounted(() => {
   taskStore.fetchTasks()
@@ -137,6 +139,13 @@ function statusColor(status) {
       return 'orange'
     default:
       return 'grey'
+  }
+}
+
+// ✅ التحكم في فتح/إغلاق السايدبار
+function toggleDrawer() {
+  if (sidebarRef.value?.toggleDrawer) {
+    sidebarRef.value.toggleDrawer()
   }
 }
 </script>
