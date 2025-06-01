@@ -3,7 +3,8 @@ import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import TaskDashboard from '@/views/TaskDashboard.vue'
 import CalendarView from "@/components/CalendarView.vue";
-import { useAuthStore } from '@/stores/auth' // ⭐ استدعاء authStore
+import { useAuthStore } from '@/stores/auth'
+import MyTasks from "@/components/MyTasks.vue"; // ⭐ استدعاء authStore
 
 const routes = [
   { path: '/', redirect: '/login' },
@@ -13,6 +14,11 @@ const routes = [
     path: '/taskDashboard',
     component: TaskDashboard,
     meta: { requiresAuth: true } // 🔐 الحماية
+  },
+  {
+    path: '/my-tasks',
+    component: MyTasks,
+    meta: { requiresAuth: true } //🔐 الحماية
   },
   {
     path: '/calendar',

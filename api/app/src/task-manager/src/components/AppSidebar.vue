@@ -31,21 +31,6 @@
       </v-list-item>
     </v-list>
   </v-navigation-drawer>
-  <!-- المحتوى الرئيسي -->
-  <v-main>
-    <div class="pa-6">
-      <h2>مرحبًا بك في التطبيق</h2>
-      <div v-if="isAuthenticated" class="mt-7">
-        <TaskStats />
-        <TaskList />
-      </div>
-      <div v-else>
-        <p class="text-center my-10">
-          الرجاء تسجيل الدخول للوصول إلى المهام.
-        </p>
-      </div>
-    </div>
-  </v-main>
 </template>
 
 <script setup>

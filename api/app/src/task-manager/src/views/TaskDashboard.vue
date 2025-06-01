@@ -6,10 +6,21 @@
     <!-- ✅ السايدبار -->
     <AppSidebar ref="sidebarRef" />
 
-    <!-- ✅ المحتوى -->
-    <v-main class="main-background">
-      <router-view />
-    </v-main>
+     المحتوى الرئيسي
+      <v-main>
+        <div class="pa-6">
+          <h2>مرحبًا بك في التطبيق</h2>
+          <div v-if="isAuthenticated" class="mt-7">
+            <TaskStats />
+            <TaskList />
+          </div>
+          <div v-else>
+            <p class="text-center my-10">
+              الرجاء تسجيل الدخول للوصول إلى المهام.
+            </p>
+          </div>
+        </div>
+      </v-main>
   </v-app>
 </template>
 
@@ -21,6 +32,8 @@ import {useTaskStore} from '@/stores/taskStore.js'
 
 import AppHeader from '@/components/AppHeader.vue'
 import AppSidebar from '@/components/AppSidebar.vue'
+import TaskStats from "@/components/TaskStats.vue";
+import TaskList from "@/components/TaskList.vue";
 
 const router = useRouter()
 const authStore = useAuthStore()
