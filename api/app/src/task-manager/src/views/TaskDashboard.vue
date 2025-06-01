@@ -1,16 +1,24 @@
 <template>
-      <!-- ✅ رأس الصفحة -->
-      <AppHeader @toggle-sidebar="toggleDrawer" />
-      <AppSidebar ref="sidebarRef" />
+  <v-app>
+    <!-- ✅ رأس الصفحة -->
+    <AppHeader @toggle-sidebar="toggleDrawer" />
+
+    <!-- ✅ السايدبار -->
+    <AppSidebar ref="sidebarRef" />
+
+    <!-- ✅ المحتوى -->
+    <v-main class="main-background">
+      <router-view />
+    </v-main>
+  </v-app>
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/auth.js'
-import { useTaskStore } from '@/stores/taskStore.js'
+import {ref, onMounted, computed} from 'vue'
+import {useRouter} from 'vue-router'
+import {useAuthStore} from '@/stores/auth.js'
+import {useTaskStore} from '@/stores/taskStore.js'
 
-// ✅ المكونات
 import AppHeader from '@/components/AppHeader.vue'
 import AppSidebar from '@/components/AppSidebar.vue'
 
@@ -21,7 +29,6 @@ const taskStore = useTaskStore()
 const isAuthenticated = computed(() => !!authStore.token)
 const sidebarRef = ref(null)
 
-// ✅ تحميل المهام عند الدخول
 onMounted(() => {
   if (!isAuthenticated.value) {
     router.push('/login')
@@ -30,16 +37,16 @@ onMounted(() => {
   }
 })
 
-// ✅ التحكم في إظهار/إخفاء السايدبار من AppHeader
+// ✅ التحكم في فتح/إغلاق السايدبار
 function toggleDrawer() {
-  if (sidebarRef.value?.drawer !== undefined) {
-    sidebarRef.value.drawer = !sidebarRef.value.drawer
+  if (sidebarRef.value?.toggleDrawer) {
+    sidebarRef.value.toggleDrawer()
   }
 }
 </script>
 
 <style scoped>
-.v-main {
+.main-background {
   background-color: #f8f9fa;
   min-height: 100vh;
 }
