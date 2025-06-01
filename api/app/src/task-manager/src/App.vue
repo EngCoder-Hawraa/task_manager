@@ -2,8 +2,8 @@
   <v-app>
     <v-main>
         <!-- ✅ رأس الصفحة -->
-        <AppHeader @toggle-sidebar="toggleDrawer" />
-        <AppSidebar ref="sidebarRef" />
+<!--        <AppHeader @toggle-sidebar="toggleDrawer" />-->
+<!--        <AppSidebar ref="sidebarRef" />-->
         <router-view />
     </v-main>
   </v-app>
@@ -17,8 +17,11 @@ import AppSidebar from "@/components/AppSidebar.vue";
 * {
   direction: rtl;
   margin: 0;
+  font-family: 'Cairo', sans-serif;
 }
+
 .v-input--density-default .v-field--variant-solo, .v-input--density-default .v-field--variant-solo-inverted, .v-input--density-default .v-field--variant-solo-filled, .v-input--density-default .v-field--variant-filled {
   direction: rtl;
+  font-family: 'Cairo', sans-serif;
 }
 </style>

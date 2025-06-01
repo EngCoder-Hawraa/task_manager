@@ -1,4 +1,7 @@
 <template>
+      <!-- ✅ رأس الصفحة -->
+      <AppHeader @toggle-sidebar="toggleDrawer" />
+      <AppSidebar ref="sidebarRef" />
 </template>
 
 <script setup>
@@ -10,24 +13,22 @@ import { useTaskStore } from '@/stores/taskStore.js'
 // ✅ المكونات
 import AppHeader from '@/components/AppHeader.vue'
 import AppSidebar from '@/components/AppSidebar.vue'
-import TaskStats from '@/components/TaskStats.vue'
-import TaskList from '@/components/TaskList.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
 const taskStore = useTaskStore()
 
-// const isAuthenticated = computed(() => !!authStore.token)
-// const sidebarRef = ref(null)
-//
-// // ✅ تحميل المهام عند الدخول
-// onMounted(() => {
-//   if (!isAuthenticated.value) {
-//     router.push('/login')
-//   } else {
-//     taskStore.fetchTasks()
-//   }
-// })
+const isAuthenticated = computed(() => !!authStore.token)
+const sidebarRef = ref(null)
+
+// ✅ تحميل المهام عند الدخول
+onMounted(() => {
+  if (!isAuthenticated.value) {
+    router.push('/login')
+  } else {
+    taskStore.fetchTasks()
+  }
+})
 
 // ✅ التحكم في إظهار/إخفاء السايدبار من AppHeader
 function toggleDrawer() {

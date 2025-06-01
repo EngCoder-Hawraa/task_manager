@@ -29,13 +29,17 @@
           v-for="item in menuItems"
           :key="item.value"
           :prepend-icon="item.icon"
-          :title="item.title"
           class="rounded-lg mx-2 my-1"
           link
-          @click="navigateTo(item.route)"
+          @click="handleMenuClick(item)"
         >
-          <v-list-item-title class="text-white">{{ item.title }}</v-list-item-title>
+          <v-list-item-title class="text-white">
+            {{ item.title }}
+          </v-list-item-title>
         </v-list-item>
+
+        <!--          <v-list-item-title class="text-white">{{ item.title }}</v-list-item-title>-->
+<!--        </v-list-item>-->
       </v-list>
     </v-navigation-drawer>
 
@@ -43,8 +47,7 @@
     <v-main>
       <div class="pa-6">
         <h2>مرحبًا بك في التطبيق</h2>
-        <p>هذا هو المحتوى الرئيسي.</p>
-        <div v-if="isAuthenticated">
+        <div v-if="isAuthenticated" class="mt-7">
           <TaskStats />
           <TaskList />
         </div>
@@ -70,15 +73,66 @@ import TaskList from "@/components/TaskList.vue"
 const router = useRouter()
 const authStore = useAuthStore()
 const taskStore = useTaskStore()
+const auth = useAuthStore()
 
 const drawer = ref(true)
 
 const menuItems = [
-  { title: "الرئيسية", icon: "mdi-view-dashboard", value: "dashboard", route: "/" },
-  { title: "الرسائل", icon: "mdi-forum", value: "messages", route: "/messages" },
-  { title: "جهات الاتصال", icon: "mdi-account-group", value: "contacts", route: "/contacts" },
-  { title: "الإعدادات", icon: "mdi-cog", value: "settings", route: "/settings" },
+  {
+    title: "لوحة المهام",
+    icon: "mdi-view-dashboard",
+    value: "dashboard",
+    route: "/taskDashboard"
+  },
+  {
+    title: "مهامي",
+    icon: "mdi-format-list-checkbox",
+    value: "my-tasks",
+    route: "/my-tasks"
+  },
+  {
+    title: "إضافة مهمة",
+    icon: "mdi-plus-box",
+    value: "add-task",
+    route: "/add-task"
+  },
+  {
+    title: "المهام الجماعية",
+    icon: "mdi-account-multiple-check",
+    value: "team-tasks",
+    route: "/team-tasks"
+  },
+  {
+    title: "إدارة المستخدمين",
+    icon: "mdi-account-cog",
+    value: "users",
+    route: "/users"
+  },
+  {
+    title: "التقارير",
+    icon: "mdi-chart-bar",
+    value: "reports",
+    route: "/reports"
+  },
+  {
+    title: "التنبيهات",
+    icon: "mdi-bell-alert",
+    value: "notifications",
+    route: "/notifications"
+  },
+  {
+    title: "الإعدادات",
+    icon: "mdi-cog",
+    value: "settings",
+    route: "/settings"
+  },
+  {
+    title: "تسجيل الخروج",
+    icon: "mdi-logout",
+    action: "logout" // 🔴 تحديد أن هذه ليست صفحة، بل إجراء
+  }
 ]
+
 
 const isAuthenticated = computed(() => !!authStore.token)
 
@@ -95,10 +149,20 @@ onMounted(() => {
 function navigateTo(route) {
   router.push(route)
 }
+
+function handleMenuClick(item) {
+  if (item.action === 'logout') {
+    auth.logout()           // 🔓 تسجيل الخروج من المتجر
+    router.push('/login')   // 🔁 إعادة التوجيه
+  } else if (item.route) {
+    router.push(item.route)
+  }
+}
 </script>
 
 <style scoped>
 .custom-drawer {
+  font-family: 'Cairo', sans-serif;
   transition: all 0.3s ease-in-out;
 }
 
@@ -106,7 +170,11 @@ function navigateTo(route) {
   transition: background-color 0.2s ease;
   cursor: pointer;
 }
-
+.v-list-item--nav .v-list-item-title {
+  font-size: 16px !important;
+  font-family: 'Cairo', sans-serif;
+  font-weight: bold;
+}
 .v-list-item:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
