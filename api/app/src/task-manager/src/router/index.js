@@ -4,7 +4,8 @@ import RegisterView from '@/views/RegisterView.vue'
 import TaskDashboard from '@/views/TaskDashboard.vue'
 import CalendarView from "@/components/CalendarView.vue";
 import { useAuthStore } from '@/stores/auth'
-import MyTasks from "@/components/MyTasks.vue"; // ⭐ استدعاء authStore
+import MyTasks from "@/components/MyTasks.vue";
+import AddTask from "@/components/AddTask.vue";
 
 const routes = [
   { path: '/', redirect: '/login' },
@@ -18,6 +19,11 @@ const routes = [
   {
     path: '/my-tasks',
     component: MyTasks,
+    meta: { requiresAuth: true } //🔐 الحماية
+  },
+  {
+    path: '/add-task',
+    component: AddTask,
     meta: { requiresAuth: true } //🔐 الحماية
   },
   {

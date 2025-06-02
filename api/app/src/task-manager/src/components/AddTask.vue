@@ -1,12 +1,7 @@
 <template>
   <v-container class="py-4">
-    <!-- زر فتح النموذج -->
-    <v-btn color="primary" @click="dialog = true" prepend-icon="mdi-plus">
-      إضافة مهمة جديدة
-    </v-btn>
-
     <!-- نافذة المودال -->
-    <v-dialog v-model="dialog" max-width="600">
+    <v-dialog v-model="internalDialog" max-width="600">
       <v-card>
         <v-card-title class="text-h6 text-center">➕ إضافة مهمة جديدة</v-card-title>
         <v-divider class="my-3"></v-divider>
@@ -30,8 +25,6 @@
               class="mb-3"
             />
 
-            <!-- يمكنك إضافة حقول status و priority هنا إذا أردت -->
-
             <v-text-field
               v-model="due_date"
               label="تاريخ الاستحقاق"
@@ -53,30 +46,35 @@
 </template>
 
 <script setup>
-import {ref} from 'vue'
-import {useTaskStore} from '@/stores/taskStore'
-import {useToast} from 'vue-toastification'
+import { ref, watch } from 'vue'
+import { useTaskStore } from '@/stores/taskStore'
+import { useToast } from 'vue-toastification'
 
-// المتغيرات التفاعلية
-const dialog = ref(false)
+// props and emits for dialog control
+const props = defineProps({ dialog: Boolean })
+const emit = defineEmits(['update:dialog'])
+
+// sync local state with parent
+const internalDialog = ref(props.dialog)
+watch(() => props.dialog, val => internalDialog.value = val)
+watch(internalDialog, val => emit('update:dialog', val))
+
+// form fields
 const title = ref('')
 const description = ref('')
+const due_date = ref('')
 const status = ref('open')
 const priority = ref('medium')
-const due_date = ref('')
 
-// مراجع الأخطاء والتنبيهات
-const formRef = ref(null)
-const toast = useToast()
-
+// error fields
 const titleError = ref('')
 const descriptionError = ref('')
 const dueDateError = ref('')
+const formRef = ref(null)
 
-// استدعاء المتجر
+const toast = useToast()
 const taskStore = useTaskStore()
 
-// دالة التحقق من صحة الحقول
 const validateFields = () => {
   let valid = true
   titleError.value = ''
@@ -101,13 +99,9 @@ const validateFields = () => {
   return valid
 }
 
-// دالة إرسال المهمة مع استخدام التنبيهات
 const submitTask = async () => {
   if (!validateFields()) {
-    toast.warning('⚠️ الرجاء تعبئة جميع الحقول المطلوبة', {
-      position: 'top-right',
-      timeout: 3000
-    })
+    toast.warning('⚠️ الرجاء تعبئة جميع الحقول المطلوبة')
     return
   }
 
@@ -121,30 +115,18 @@ const submitTask = async () => {
     })
 
     if (taskStore.error) {
-      toast.error(`❌ حدث خطأ: ${taskStore.error}`, {
-        position: 'top-right',
-        timeout: 4000
-      })
+      toast.error(`❌ حدث خطأ: ${taskStore.error}`)
     } else {
-      toast.success('✅ تم إضافة المهمة بنجاح', {
-        position: 'top-right',
-        timeout: 3000
-      })
-
-      // إعادة تعيين الحقول وإغلاق المودال
+      toast.success('✅ تم إضافة المهمة بنجاح')
+      // Reset fields
       title.value = ''
       description.value = ''
       due_date.value = ''
-      status.value = 'open'
-      priority.value = 'medium'
-      dialog.value = false
+      internalDialog.value = false
     }
-  } catch (error) {
-    toast.error('⚠️ فشل في الاتصال بالخادم', {
-      position: 'top-right',
-      timeout: 4000
-    })
-    console.error(error)
+  } catch (err) {
+    console.error(err)
+    toast.error('⚠️ فشل في الاتصال بالخادم')
   }
 }
 </script>

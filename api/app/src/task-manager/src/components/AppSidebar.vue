@@ -106,7 +106,6 @@ function handleMenuClick(item) {
 }
 
 .v-list-item--nav .v-list-item-title {
-  font-size: 16px !important;
   font-family: 'Cairo', sans-serif;
   font-weight: bold;
 }

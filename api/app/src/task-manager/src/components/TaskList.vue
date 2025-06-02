@@ -7,7 +7,11 @@
           <!-- العنوان وزر إضافة مهمة -->
           <div class="d-flex justify-space-between align-center mb-4">
             <v-card-title class="text-h5">📝 قائمة المهام</v-card-title>
-            <AddTask />
+            <AddTask v-model:dialog="dialog" />
+            <!-- زر فتح النموذج -->
+            <v-btn  class="me-4" color="primary" @click="dialog = true" prepend-icon="mdi-plus">
+              إضافة مهمة جديدة
+            </v-btn>
             <v-btn
               to="/calendar"
               color="primary"
@@ -126,7 +130,8 @@ import EditTask from "@/components/EditTask.vue";
 
 const taskStore = useTaskStore();
 const toast = useToast();
-
+// المتغيرات التفاعلية
+const dialog = ref(false)
 // الحالة الافتراضية للفلتر (كل المهام)
 const filterStatus = ref("الكل");
 
