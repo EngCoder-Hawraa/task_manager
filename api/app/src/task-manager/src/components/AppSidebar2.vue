@@ -22,8 +22,8 @@
 
       <v-divider class="mb-4" />
 
-      <!-- الأقسام -->
-      <template v-for="(section, sectionIndex) in sections" :key="sectionIndex">
+      <!-- أقسام التنقل على شكل قوائم قابلة للفتح -->
+      <template v-for="(section, idx) in sections" :key="idx">
         <v-list-group
           v-model="openSection"
           :value="section.title"
@@ -38,38 +38,33 @@
               :title="mini ? section.title : ''"
             >
               <v-list-item-content v-if="!mini">
-                <v-list-item-title class="font-weight-bold">{{ section.title }}</v-list-item-title>
+                <v-list-item-title class="font-weight-bold">
+                  {{ section.title }}
+                </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </template>
 
-          <!-- ✅ Drag-and-drop list -->
-          <draggable
-            v-model="section.items"
-            item-key="value"
-            :group="{ name: 'menu', pull: true, put: true }"
-            ghost-class="ghost"
-            animation="200"
+          <v-list-item
+            v-for="item in section.items"
+            :key="item.value || item.title"
+            :prepend-icon="item.icon"
+            class="mx-4 my-1 rounded"
+            link
+            @click="handleMenuClick(item)"
+            :title="mini ? item.title : ''"
+            :active="activeRoute === item.route"
+            :class="{ 'active-item': activeRoute === item.route }"
           >
-            <template #item="{ element: item }">
-              <v-list-item
-                :key="item.value"
-                :prepend-icon="item.icon"
-                class="mx-4 my-1 rounded"
-                link
-                @click="handleMenuClick(item)"
-                :title="mini ? item.title : ''"
-                :active="activeRoute === item.route"
-                :class="{ 'active-item': activeRoute === item.route }"
-              >
-                <v-list-item-content v-if="!mini">
-                  <v-list-item-title class="text-white font-weight-medium">{{ item.title }}</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </template>
-          </draggable>
+            <v-list-item-content v-if="!mini">
+              <v-list-item-title class="text-white font-weight-medium">
+                {{ item.title }}
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
         </v-list-group>
       </template>
+
 
       <v-spacer></v-spacer>
 
@@ -89,6 +84,8 @@
           <span v-if="!mini" class="font-weight-bold text-white">تسجيل الخروج</span>
         </template>
       </v-list-item>
+
+
     </v-list>
 
     <!-- زر تصغير/تكبير السايدبار -->
@@ -109,20 +106,23 @@ import {ref, computed, onMounted, defineExpose} from 'vue'
 import {useRouter} from 'vue-router'
 import {useAuthStore} from '@/stores/auth.js'
 import {useTaskStore} from '@/stores/taskStore.js'
-import draggable from 'vuedraggable'
+
 
 const router = useRouter()
 const authStore = useAuthStore()
 const taskStore = useTaskStore()
-
 const mini = ref(false)
 const drawer = ref(true)
 
+// ✅ فضح متغير ودالة لإغلاق/فتح drawer من المكون الأب
 function toggleDrawer() {
   drawer.value = !drawer.value
 }
 
-defineExpose({drawer, toggleDrawer})
+defineExpose({
+  drawer,
+  toggleDrawer
+})
 
 const isAuthenticated = computed(() => !!authStore.token)
 
@@ -134,35 +134,23 @@ onMounted(() => {
   }
 })
 
-const openSection = ref(null)
-
-const sections = ref([
+const sections = [
   {
     title: 'القائمة الرئيسية',
     items: [
-      {
-        title: 'لوحة المهام',
-        icon: 'mdi-view-dashboard',
-        value: 'dashboard',
-        route: '/taskDashboard'
-      },
-      {title: 'مهامي', icon: 'mdi-format-list-checkbox', value: 'my-tasks', route: '/my-tasks'},
-      {title: 'إضافة مهمة', icon: 'mdi-plus-box', value: 'add-task', route: '/add-task'},
-      {
-        title: 'المهام الجماعية',
-        icon: 'mdi-account-multiple-check',
-        value: 'team-tasks',
-        route: '/team-tasks'
-      },
+      { title: 'لوحة المهام', icon: 'mdi-view-dashboard', value: 'dashboard', route: '/taskDashboard' },
+      { title: 'مهامي', icon: 'mdi-format-list-checkbox', value: 'my-tasks', route: '/my-tasks' },
+      { title: 'إضافة مهمة', icon: 'mdi-plus-box', value: 'add-task', route: '/add-task' },
+      { title: 'المهام الجماعية', icon: 'mdi-account-multiple-check', value: 'team-tasks', route: '/team-tasks' },
     ]
   },
   {
     title: 'الإدارة',
     items: [
-      {title: 'إدارة المستخدمين', icon: 'mdi-account-cog', value: 'users', route: '/users'},
-      {title: 'التقارير', icon: 'mdi-chart-bar', value: 'reports', route: '/reports'},
-      {title: 'التنبيهات', icon: 'mdi-bell-alert', value: 'notifications', route: '/notifications'},
-      {title: 'الإعدادات', icon: 'mdi-cog', value: 'settings', route: '/app-settings'},
+      { title: 'إدارة المستخدمين', icon: 'mdi-account-cog', value: 'users', route: '/users' },
+      { title: 'التقارير', icon: 'mdi-chart-bar', value: 'reports', route: '/reports' },
+      { title: 'التنبيهات', icon: 'mdi-bell-alert', value: 'notifications', route: '/notifications' },
+      { title: 'الإعدادات', icon: 'mdi-cog', value: 'settings', route: '/app-settings' },
     ]
   },
   {
@@ -182,7 +170,25 @@ const sections = ref([
       { title: 'الترجمة', icon: 'mdi-translate', value: 'i18n', route: '/translations' },
     ]
   }
-])
+]
+
+
+const menuItems = [
+  {title: "لوحة المهام", icon: "mdi-view-dashboard", value: "dashboard", route: "/taskDashboard"},
+  {title: "مهامي", icon: "mdi-format-list-checkbox", value: "my-tasks", route: "/my-tasks"},
+  {title: "إضافة مهمة", icon: "mdi-plus-box", value: "add-task", route: "/add-task"},
+  {
+    title: "المهام الجماعية",
+    icon: "mdi-account-multiple-check",
+    value: "team-tasks",
+    route: "/team-tasks"
+  },
+  {title: "إدارة المستخدمين", icon: "mdi-account-cog", value: "users", route: "/users"},
+  {title: "التقارير", icon: "mdi-chart-bar", value: "reports", route: "/reports"},
+  {title: "التنبيهات", icon: "mdi-bell-alert", value: "notifications", route: "/notifications"},
+  {title: "الإعدادات", icon: "mdi-cog", value: "settings", route: "/settings"},
+  {title: "تسجيل الخروج", icon: "mdi-logout", action: "logout"}
+]
 
 function handleMenuClick(item) {
   if (item.action === 'logout') {
@@ -196,8 +202,7 @@ function logout() {
   authStore.logout()
   router.push('/login')
 }
-
-const activeRoute = computed(() => router.currentRoute.value.path)
+const openSection = ref(null) // فقط قسم واحد يفتح
 </script>
 
 <style scoped>
@@ -206,7 +211,6 @@ const activeRoute = computed(() => router.currentRoute.value.path)
   transition: all 0.3s ease-in-out;
   overflow: hidden;
 }
-
 .group-section {
   background-color: rgba(255, 255, 255, 0.05);
   padding-top: 4px;
@@ -225,16 +229,17 @@ const activeRoute = computed(() => router.currentRoute.value.path)
 
 .v-list-item {
   transition: background-color 0.2s ease, transform 0.2s ease;
-  cursor: move;
+  cursor: pointer;
+}
+
+.v-list-item--nav .v-list-item-title {
+  font-family: 'Cairo', sans-serif;
+  font-weight: bold;
 }
 
 .v-list-item:hover {
   transform: translateX(-2px);
   background-color: rgba(255, 255, 255, 0.08);
-}
-
-.ghost {
-  opacity: 0.4;
 }
 
 .text-white {
