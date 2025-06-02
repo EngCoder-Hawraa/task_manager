@@ -5,7 +5,9 @@ import TaskDashboard from '@/views/TaskDashboard.vue'
 import CalendarView from "@/components/CalendarView.vue";
 import { useAuthStore } from '@/stores/auth'
 import MyTasks from "@/components/MyTasks.vue";
-import AddTask from "@/components/AddTask.vue";
+// import AddTask from "@/components/AddTask.vue";
+import AddTask2 from "@/components/AddTask2.vue";
+import TeamTasks from "@/components/TeamTasks.vue";
 
 const routes = [
   { path: '/', redirect: '/login' },
@@ -23,7 +25,12 @@ const routes = [
   },
   {
     path: '/add-task',
-    component: AddTask,
+    component: AddTask2,
+    meta: { requiresAuth: true } //🔐 الحماية
+  },
+  {
+    path: '/team-tasks',
+    component: TeamTasks,
     meta: { requiresAuth: true } //🔐 الحماية
   },
   {
