@@ -66,6 +66,7 @@ const priorityFilter = ref(null)
 
 const statusFilterOptions = ['مفتوحة', 'قيد التنفيذ', 'مكتملة', 'تم الإلغاء']
 const priorityFilterOptions = ['عالية', 'متوسطة', 'منخفضة']
+const sidebarRef = ref(null)
 
 // بيانات المهام (مؤقتة لاختبار الواجهة)
 const tasks = ref([
@@ -131,6 +132,13 @@ const deleteTask = (id) => {
 }
 const goToAddPage = () => {
   alert('الانتقال إلى صفحة إضافة مهمة جديدة')
+}
+
+// ✅ التحكم في فتح/إغلاق السايدبار
+function toggleDrawer() {
+  if (sidebarRef.value?.toggleDrawer) {
+    sidebarRef.value.toggleDrawer()
+  }
 }
 </script>
 

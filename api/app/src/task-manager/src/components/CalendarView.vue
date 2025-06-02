@@ -1,4 +1,9 @@
 <template>
+  <!-- ✅ رأس الصفحة -->
+  <AppHeader @toggle-sidebar="toggleDrawer" />
+
+  <!-- ✅ السايدبار -->
+  <AppSidebar ref="sidebarRef" />
   <v-container class="mt-6 mb-10">
     <v-card elevation="3" class="pa-5 rounded-xl">
       <!-- العنوان والتحكم في العرض -->
@@ -42,9 +47,12 @@ import 'vue-cal/dist/vuecal.css'
 import VueCal from 'vue-cal'
 import { ref, computed, onMounted } from 'vue'
 import { useTaskStore } from '@/stores/taskStore'
+import AppHeader from "@/components/AppHeader.vue";
+import AppSidebar from "@/components/AppSidebar.vue";
 
 const taskStore = useTaskStore()
 const selectedView = ref('month') // الوضع الافتراضي
+const sidebarRef = ref(null)
 
 onMounted(() => {
   taskStore.fetchTasks()
@@ -71,6 +79,13 @@ function getStatusClass(status) {
     case 'قيد التنفيذ': return 'event-orange'
     case 'تم الإلغاء': return 'event-red'
     default: return 'event-blue'
+  }
+}
+
+// ✅ التحكم في فتح/إغلاق السايدبار
+function toggleDrawer() {
+  if (sidebarRef.value?.toggleDrawer) {
+    sidebarRef.value.toggleDrawer()
   }
 }
 </script>

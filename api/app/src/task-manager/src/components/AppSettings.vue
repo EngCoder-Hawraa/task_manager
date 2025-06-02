@@ -64,6 +64,7 @@ import AppHeader from "@/components/AppHeader.vue";
 import AppSidebar from "@/components/AppSidebar.vue";
 
 const toast = useToast()
+const sidebarRef = ref(null)
 
 const user = ref({
   name: 'أحمد علي',
@@ -95,6 +96,13 @@ const changePassword = () => {
     return
   }
   toast.success('🔐 تم تغيير كلمة المرور بنجاح')
+}
+
+// ✅ التحكم في فتح/إغلاق السايدبار
+function toggleDrawer() {
+  if (sidebarRef.value?.toggleDrawer) {
+    sidebarRef.value.toggleDrawer()
+  }
 }
 </script>
 <style scoped>

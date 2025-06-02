@@ -86,6 +86,7 @@ const dateTo = ref('')
 const reportData = ref(null)
 const barChartData = ref(null)
 const pieChartData = ref(null)
+const sidebarRef = ref(null)
 
 const barChartOptions = {
   responsive: true,
@@ -144,6 +145,12 @@ const generateReport = () => {
     reportData.value = null
     barChartData.value = null
     pieChartData.value = null
+  }
+}
+// ✅ التحكم في فتح/إغلاق السايدبار
+function toggleDrawer() {
+  if (sidebarRef.value?.toggleDrawer) {
+    sidebarRef.value.toggleDrawer()
   }
 }
 </script>

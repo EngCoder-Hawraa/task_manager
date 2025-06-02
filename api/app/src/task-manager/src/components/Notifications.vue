@@ -70,9 +70,16 @@ const notifications = ref([
     read: true
   }
 ])
+const sidebarRef = ref(null)
 
 const markAsRead = (index) => {
   notifications.value[index].read = true
+}
+// ✅ التحكم في فتح/إغلاق السايدبار
+function toggleDrawer() {
+  if (sidebarRef.value?.toggleDrawer) {
+    sidebarRef.value.toggleDrawer()
+  }
 }
 </script>
 <style scoped>

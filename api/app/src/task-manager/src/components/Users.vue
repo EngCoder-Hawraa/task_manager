@@ -64,6 +64,7 @@ const statusFilter = ref(null)
 
 const roles = ['مدير', 'موظف', 'مشرف', 'زائر']
 const statusOptions = ['مفعل', 'غير مفعل']
+const sidebarRef = ref(null)
 
 const users = ref([
   {
@@ -116,6 +117,12 @@ const deleteUser = (id) => {
 }
 const goToAddUser = () => {
   alert('الانتقال إلى صفحة إضافة مستخدم جديد')
+}
+// ✅ التحكم في فتح/إغلاق السايدبار
+function toggleDrawer() {
+  if (sidebarRef.value?.toggleDrawer) {
+    sidebarRef.value.toggleDrawer()
+  }
 }
 </script>
 
