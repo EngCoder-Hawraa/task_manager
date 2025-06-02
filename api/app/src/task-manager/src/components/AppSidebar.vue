@@ -80,7 +80,7 @@ const menuItems = [
   {title: "إدارة المستخدمين", icon: "mdi-account-cog", value: "users", route: "/users"},
   {title: "التقارير", icon: "mdi-chart-bar", value: "reports", route: "/reports"},
   {title: "التنبيهات", icon: "mdi-bell-alert", value: "notifications", route: "/notifications"},
-  {title: "الإعدادات", icon: "mdi-cog", value: "settings", route: "/settings"},
+  {title: "الإعدادات", icon: "mdi-cog", value: "settings", route: "/app-settings"},
   {title: "تسجيل الخروج", icon: "mdi-logout", action: "logout"}
 ]
 

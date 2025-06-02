@@ -8,6 +8,10 @@ import MyTasks from "@/components/MyTasks.vue";
 // import AddTask from "@/components/AddTask.vue";
 import AddTask2 from "@/components/AddTask2.vue";
 import TeamTasks from "@/components/TeamTasks.vue";
+import Users from "@/components/Users.vue";
+import Reports from "@/components/Reports.vue";
+import Notifications from "@/components/Notifications.vue";
+import AppSettings from "@/components/AppSettings.vue";
 
 const routes = [
   { path: '/', redirect: '/login' },
@@ -31,6 +35,26 @@ const routes = [
   {
     path: '/team-tasks',
     component: TeamTasks,
+    meta: { requiresAuth: true } //🔐 الحماية
+  },
+  {
+    path: '/users',
+    component: Users,
+    meta: { requiresAuth: true } //🔐 الحماية
+  },
+  {
+    path: '/reports',
+    component: Reports,
+    meta: { requiresAuth: true } //🔐 الحماية
+  },
+  {
+    path: '/notifications',
+    component: Notifications,
+    meta: { requiresAuth: true } //🔐 الحماية
+  },
+  {
+    path: '/app-settings',
+    component: AppSettings,
     meta: { requiresAuth: true } //🔐 الحماية
   },
   {

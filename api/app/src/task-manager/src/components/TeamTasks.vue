@@ -63,6 +63,7 @@ const search = ref('')
 const statusFilter = ref(null)
 const priorityFilter = ref(null)
 
+
 const statusFilterOptions = ['مفتوحة', 'قيد التنفيذ', 'مكتملة', 'تم الإلغاء']
 const priorityFilterOptions = ['عالية', 'متوسطة', 'منخفضة']
 
@@ -77,6 +78,10 @@ const tasks = ref([
     assigned_to: [
       { id: 1, avatar: 'https://i.pravatar.cc/40?u=user1' },
       { id: 2, avatar: 'https://i.pravatar.cc/40?u=user2' }
+    ],
+    comments: [
+      { id: 1, user: 'أحمد', text: 'يرجى تعديل الألوان.' },
+      { id: 2, user: 'سارة', text: 'تم تنفيذ المطلوب.' }
     ]
   },
   {
@@ -87,7 +92,8 @@ const tasks = ref([
     priority: 'متوسطة',
     assigned_to: [
       { id: 3, avatar: 'https://i.pravatar.cc/40?u=user3' }
-    ]
+    ],
+    comments: []
   }
 ])
 
@@ -112,7 +118,10 @@ const filteredTasks = computed(() => {
 
 // دوال الإجراءات (مجرد أمثلة)
 const viewTask = (task) => {
-  alert(`عرض المهمة: ${task.title}`)
+  const comments = task.comments?.length
+    ? task.comments.map(c => `- ${c.user}: ${c.text}`).join('\n')
+    : 'لا توجد تعليقات بعد.'
+  alert(`عرض المهمة: ${task.title}\n\nالتعليقات:\n${comments}`)
 }
 const editTask = (task) => {
   alert(`تعديل المهمة: ${task.title}`)
