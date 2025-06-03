@@ -1,11 +1,21 @@
 <template>
 <!--  <v-app>-->
     <!-- ✅ شاشة التحميل تغطي الصفحة -->
-    <div v-if="loadingScreen" class="loading-overlay">
-      <v-progress-circular indeterminate color="primary" size="70" />
+  <!-- ✅ شاشة التحميل المحسّنة -->
+  <div v-if="loadingScreen" class="loading-overlay fade-in">
+    <div class="loader-content">
+      <v-progress-circular
+        indeterminate
+        color="primary"
+        size="80"
+        width="6"
+      />
+      <p class="loading-text">جاري تحميل البيانات...</p>
     </div>
+  </div>
 
-    <!-- ✅ بعد تحميل البيانات -->
+
+  <!-- ✅ بعد تحميل البيانات -->
     <div v-else>
       <!-- ✅ رأس الصفحة -->
       <AppHeader @toggle-sidebar="toggleDrawer" />
@@ -13,8 +23,8 @@
       <!-- ✅ السايدبار -->
       <AppSidebar ref="sidebarRef" />
 
-      <v-slide-y-transition group>
-        <div class="pa-6 main-background">
+      <transition name="fade" mode="out-in">
+        <div class="pa-6 main-background fade-in-container" key="main-content">
           <h2>مرحبًا بك في التطبيق</h2>
 
           <!-- ⏳ تحميل داخلي للمهام فقط -->
@@ -36,7 +46,7 @@
             </p>
           </div>
         </div>
-      </v-slide-y-transition>
+      </transition>
     </div>
 <!--  </v-app>-->
 </template>
@@ -73,7 +83,7 @@ onMounted(async () => {
       // تأخير اختياري لإعطاء شعور تحميل مثل يوتيوب
       setTimeout(() => {
         loadingScreen.value = false
-      }, 1000)
+      }, 50)
     }
   }
 })
@@ -87,18 +97,74 @@ function toggleDrawer() {
 </script>
 
 <style scoped>
+.fade-enter-active, .fade-leave-active {
+  transition: all 0.6s ease;
+}
+
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+  transform: translateY(15px);
+}
+
+.fade-enter-to, .fade-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .main-background {
   background-color: #f8f9fa;
   min-height: 100vh;
 }
 
+/* خلفية الشاشة */
 .loading-overlay {
   position: fixed;
   inset: 0;
-  background-color: white;
+  background: linear-gradient(135deg, #ffffff, #f0f4f8);
   z-index: 9999;
   display: flex;
   justify-content: center;
   align-items: center;
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* المحتوى الداخلي */
+.loader-content {
+  text-align: center;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+/* نص التحميل */
+.loading-text {
+  margin-top: 20px;
+  font-size: 1.25rem;
+  color: #1976d2;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+/* تأثير الظهور البطيء */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* نبض لطيف */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.215);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 </style>

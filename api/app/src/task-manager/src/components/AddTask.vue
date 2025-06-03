@@ -1,42 +1,67 @@
 <template>
   <v-container class="py-4">
-    <!-- نافذة المودال -->
-    <v-dialog v-model="internalDialog" max-width="600">
-      <v-card>
-        <v-card-title class="text-h6 text-center">➕ إضافة مهمة جديدة</v-card-title>
-        <v-divider class="my-3"></v-divider>
+    <v-dialog
+      v-model="internalDialog"
+      max-width="600"
+      transition="dialog-bottom-transition"
+      persistent
+      scrim="black"
+    >
+      <v-card class="rounded-xl elevation-10">
+        <v-card-title class="text-h6 text-center d-flex align-center justify-center">
+          <v-icon color="primary" class="me-2">mdi-plus</v-icon>
+          ➕ إضافة مهمة جديدة
+        </v-card-title>
 
-        <v-card-text>
-          <v-form @submit.prevent="submitTask" ref="formRef">
+        <v-divider class="my-2" />
+
+        <v-card-text class="pt-0">
+          <v-form @submit.prevent="submitTask" ref="formRef" validate-on="submit lazy">
             <v-text-field
               v-model="title"
-              label="العنوان"
+              label="✏️ العنوان"
               :error-messages="titleError"
+              variant="outlined"
+              color="primary"
+              rounded
+              class="mb-4"
               required
-              class="mb-3"
             />
 
             <v-textarea
               v-model="description"
-              label="الوصف"
+              label="📝 الوصف"
               :error-messages="descriptionError"
-              required
+              variant="outlined"
+              color="primary"
+              rounded
               rows="3"
-              class="mb-3"
+              class="mb-4"
+              required
             />
 
             <v-text-field
               v-model="due_date"
-              label="تاريخ الاستحقاق"
+              label="📅 تاريخ الاستحقاق"
               type="date"
               :error-messages="dueDateError"
+              variant="outlined"
+              color="primary"
+              rounded
+              class="mb-5"
               required
-              class="mb-4"
             />
 
-            <!-- زر الإرسال -->
-            <v-btn type="submit" color="success" block>
-              حفظ المهمة
+            <v-btn
+              type="submit"
+              color="success"
+              block
+              size="large"
+              rounded
+              elevation="2"
+              class="text-white"
+            >
+              💾 حفظ المهمة
             </v-btn>
           </v-form>
         </v-card-text>
@@ -44,6 +69,7 @@
     </v-dialog>
   </v-container>
 </template>
+
 
 <script setup>
 import { ref, watch } from 'vue'
@@ -130,3 +156,22 @@ const submitTask = async () => {
   }
 }
 </script>
+<style>
+.v-dialog > .v-overlay__content {
+  transition: all 0.35s ease-in-out;
+}
+
+.v-card-title {
+  font-family: 'Cairo', sans-serif;
+  font-weight: 700;
+}
+
+.v-card-text {
+  font-family: 'Cairo', sans-serif;
+}
+
+.v-text-field input,
+.v-textarea textarea {
+  background-color: #f9f9f9;
+}
+</style>

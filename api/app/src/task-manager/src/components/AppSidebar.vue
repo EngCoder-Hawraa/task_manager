@@ -14,10 +14,8 @@
     <v-list nav dense>
       <!-- حساب المستخدم -->
       <v-list-item class="mt-6 mb-4" prepend-avatar="https://randomuser.me/api/portraits/women/75.jpg">
-        <v-list-item-content>
           <v-list-item-title class="text-white font-weight-bold headline">مرحبًا، حوراء</v-list-item-title>
           <v-list-item-subtitle class="text-white-50">حسابك الشخصي</v-list-item-subtitle>
-        </v-list-item-content>
       </v-list-item>
 
       <v-divider class="mb-4" />
@@ -37,9 +35,7 @@
               class="text-white"
               :title="mini ? section.title : ''"
             >
-              <v-list-item-content v-if="!mini">
                 <v-list-item-title class="font-weight-bold">{{ section.title }}</v-list-item-title>
-              </v-list-item-content>
             </v-list-item>
           </template>
 
@@ -62,9 +58,7 @@
                 :active="activeRoute === item.route"
                 :class="{ 'active-item': activeRoute === item.route }"
               >
-                <v-list-item-content v-if="!mini">
                   <v-list-item-title class="text-white font-weight-medium">{{ item.title }}</v-list-item-title>
-                </v-list-item-content>
               </v-list-item>
             </template>
           </draggable>

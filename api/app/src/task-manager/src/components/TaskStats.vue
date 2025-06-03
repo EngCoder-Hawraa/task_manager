@@ -1,8 +1,8 @@
 <script setup>
-import { computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
-import { useTaskStore } from '@/stores/taskStore'
+import {computed, onMounted} from 'vue'
+import {useRouter} from 'vue-router'
+import {useAuthStore} from '@/stores/auth'
+import {useTaskStore} from '@/stores/taskStore'
 
 // استدعاء router و stores
 const router = useRouter()
@@ -21,13 +21,14 @@ onMounted(() => {
   }
 })
 
+// تحميل
+const loading = computed(() => taskStore.loading)
+
 // حساب الإحصائيات
 const totalTasks = computed(() => taskStore.tasks.length)
-
 const completedTasks = computed(() =>
   taskStore.tasks.filter(task => task.status === 'مكتملة').length
 )
-
 const pendingTasks = computed(() =>
   taskStore.tasks.filter(task => task.status !== 'مكتملة').length
 )
@@ -36,24 +37,41 @@ const pendingTasks = computed(() =>
 <template>
   <div v-if="isAuthenticated">
     <v-row>
-      <v-col cols="12" md="4">
-        <v-card color="blue-lighten-4">
-          <v-card-title>إجمالي المهام</v-card-title>
-          <v-card-text>{{ totalTasks }}</v-card-text>
-        </v-card>
-      </v-col>
-      <v-col cols="12" md="4">
-        <v-card color="green-lighten-4">
-          <v-card-title>المهام المكتملة</v-card-title>
-          <v-card-text>{{ completedTasks }}</v-card-text>
-        </v-card>
-      </v-col>
-      <v-col cols="12" md="4">
-        <v-card color="red-lighten-4">
-          <v-card-title>المهام المتبقية</v-card-title>
-          <v-card-text>{{ pendingTasks }}</v-card-text>
-        </v-card>
-      </v-col>
+      <template v-if="loading">
+        <!-- Skeletons -->
+        <v-col cols="12" md="4" v-for="n in 3" :key="n">
+          <v-skeleton-loader
+            type="card"
+            height="100"
+            class="mb-3"
+            elevation="2"
+          />
+        </v-col>
+      </template>
+
+      <template v-else>
+        <!-- ✅ البطاقات الفعلية -->
+        <v-col cols="12" md="4">
+          <v-card color="blue-lighten-4" elevation="2">
+            <v-card-title>إجمالي المهام</v-card-title>
+            <v-card-text>{{ totalTasks }}</v-card-text>
+          </v-card>
+        </v-col>
+
+        <v-col cols="12" md="4">
+          <v-card color="green-lighten-4" elevation="2">
+            <v-card-title>المهام المكتملة</v-card-title>
+            <v-card-text>{{ completedTasks }}</v-card-text>
+          </v-card>
+        </v-col>
+
+        <v-col cols="12" md="4">
+          <v-card color="red-lighten-4" elevation="2">
+            <v-card-title>المهام المتبقية</v-card-title>
+            <v-card-text>{{ pendingTasks }}</v-card-text>
+          </v-card>
+        </v-col>
+      </template>
     </v-row>
 
     <v-divider class="my-4"/>
@@ -72,6 +90,3 @@ const pendingTasks = computed(() =>
     -->
   </div>
 </template>
-
-<style scoped>
-</style>
