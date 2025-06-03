@@ -3,13 +3,13 @@
 require_once __DIR__ . '/../models/Task.php';
 require_once __DIR__ . '/../helpers/jwt_helper.php';
 
-class Dashboard
+class TaskController extends Controller
 {
     private $taskModel;
 
     public function __construct()
     {
-        $this->taskModel = new Task();
+        $this->taskModel = new TaskController();
     }
 
     // ✅ توثيق المستخدم عن طريق JWT

@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
 
-// تعيين الـ base URL لمرة واحدة فقط (لاحظ حذف "Dashboard" في المسار)
-axios.defaults.baseURL = 'http://localhost/task_manager/api/public/Dashboard'
+// تعيين الـ base URL لمرة واحدة فقط (لاحظ حذف "TaskController" في المسار)
+axios.defaults.baseURL = 'http://localhost/task_manager/api/public/TaskController'
 
-export const useTaskStore = defineStore('task', {
+export const useTaskStore = defineStore('tasks', {
   state: () => ({
     tasks: [],
     selectedTask: null,

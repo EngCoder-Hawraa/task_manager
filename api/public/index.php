@@ -41,7 +41,7 @@ $init = new Core;
 //
 //// تحميل الـ Controllers
 //require_once __DIR__ . '/../app/controllers/Auth.php';
-////require_once __DIR__ . '/../app/controllers/Dashboard.php';
+////require_once __DIR__ . '/../app/controllers/TaskController.php';
 //
 //// الحصول على المسار من URI
 //$uri = explode('/', trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/'));
@@ -60,7 +60,7 @@ $init = new Core;
 //$endpoint = $uri[$apiIndex + 2] ?? '';
 //
 //$authController = new Auth();
-////$dashboardController = new Dashboard();
+////$dashboardController = new TaskController();
 //
 //// التوجيه حسب المسار
 //switch ($endpoint) {
