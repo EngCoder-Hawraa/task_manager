@@ -62,60 +62,76 @@
             لا توجد مهام حسب الفلتر الحالي.
           </v-alert>
 
-          <!-- ✅ عرض المهام بتأثير ناعم -->
+          <!-- ✅ عرض المهام مع pagination -->
           <v-fade-transition mode="out-in">
-            <v-row dense key="task-list">
-              <v-col
-                v-for="task in filteredTasks"
-                :key="task.id"
-                cols="12"
-                md="6"
-              >
-                <v-card elevation="1" class="mb-3 task-card-fade">
-                  <v-card-title>
-                    <div class="d-flex justify-space-between align-center w-100">
-                      <span>{{ task.title }}</span>
-                      <v-chip
+            <div key="task-list">
+              <v-row dense>
+                <v-col
+                  v-for="task in paginatedTasks"
+                  :key="task.id"
+                  cols="12"
+                  md="6"
+                >
+                  <v-card elevation="1" class="mb-3 task-card-fade">
+                    <v-card-title>
+                      <div class="d-flex justify-space-between align-center w-100">
+                        <span>{{ task.title }}</span>
+                        <v-chip
+                          size="small"
+                          :color="statusLabels[task.status]?.color || 'grey'"
+                          class="text-white"
+                        >
+                          {{ statusLabels[task.status]?.text || task.status }}
+                        </v-chip>
+                      </div>
+                    </v-card-title>
+
+                    <v-card-text>
+                      <p class="mb-2 text-grey-darken-1">{{ task.description }}</p>
+                      <p class="mb-1"><strong>الأولوية:</strong> {{ priorityLabels[task.priority] }}</p>
+                      <p><strong>التاريخ:</strong> {{ formatDate(task.due_date) }}</p>
+                    </v-card-text>
+
+                    <v-card-actions>
+                      <v-btn
+                        v-if="task.status !== 'مكتملة'"
+                        color="success"
                         size="small"
-                        :color="statusLabels[task.status]?.color || 'grey'"
-                        class="text-white"
+                        variant="flat"
+                        @click="markAsDone(task.id)"
                       >
-                        {{ statusLabels[task.status]?.text || task.status }}
-                      </v-chip>
-                    </div>
-                  </v-card-title>
+                        ✔ تم الإنجاز
+                      </v-btn>
 
-                  <v-card-text>
-                    <p class="mb-2 text-grey-darken-1">{{ task.description }}</p>
-                    <p class="mb-1"><strong>الأولوية:</strong> {{ priorityLabels[task.priority] }}</p>
-                    <p><strong>التاريخ:</strong> {{ formatDate(task.due_date) }}</p>
-                  </v-card-text>
+                      <EditTask :task="task" />
 
-                  <v-card-actions>
-                    <v-btn
-                      v-if="task.status !== 'مكتملة'"
-                      color="success"
-                      size="small"
-                      variant="flat"
-                      @click="markAsDone(task.id)"
-                    >
-                      ✔ تم الإنجاز
-                    </v-btn>
+                      <v-btn
+                        color="error"
+                        size="small"
+                        variant="tonal"
+                        class="me-4"
+                        @click="confirmDelete(task.id)"
+                      >
+                        🗑 حذف
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-col>
+              </v-row>
 
-                    <EditTask :task="task" />
-
-                    <v-btn
-                      color="error"
-                      size="small"
-                      variant="tonal"
-                      @click="confirmDelete(task.id)"
-                    >
-                      🗑 حذف
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-col>
-            </v-row>
+              <!-- ✅ Pagination -->
+              <v-pagination
+                v-model="currentPage"
+                :length="totalPages"
+                :total-visible="5"
+                color="primary"
+                size="large"
+                rounded
+                class="custom-pagination mt-4 justify-center"
+                prev-icon="mdi-chevron-right"
+                next-icon="mdi-chevron-left"
+              />
+            </div>
           </v-fade-transition>
         </v-card>
       </v-col>
@@ -123,10 +139,9 @@
   </v-container>
 </template>
 
-
 <script setup>
 import Swal from "sweetalert2";
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { useToast } from "vue-toastification";
 import { useTaskStore } from "@/stores/taskStore";
 
@@ -138,6 +153,10 @@ const toast = useToast();
 
 const dialog = ref(false);
 const filterStatus = ref("الكل");
+
+// ✅ Pagination
+const currentPage = ref(1);
+const itemsPerPage = 10;
 
 const statusLabels = {
   "مفتوحة": { text: "مفتوحة", color: "blue" },
@@ -157,6 +176,20 @@ const filteredTasks = computed(() => {
     return taskStore.tasks;
   }
   return taskStore.tasks.filter(task => task.status === filterStatus.value);
+});
+
+const paginatedTasks = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  return filteredTasks.value.slice(start, start + itemsPerPage);
+});
+
+const totalPages = computed(() => {
+  return Math.ceil(filteredTasks.value.length / itemsPerPage);
+});
+
+// ✅ Reset pagination when filter changes
+watch(filterStatus, () => {
+  currentPage.value = 1;
 });
 
 onMounted(() => {
@@ -201,6 +234,7 @@ const markAsDone = async (id) => {
   }
 };
 </script>
+
 <style scoped>
 .slow-fade {
   position: relative;
@@ -234,6 +268,7 @@ const markAsDone = async (id) => {
     left: 100%;
   }
 }
+
 .task-card-fade {
   animation: fadeInCard 0.8s ease forwards;
   opacity: 0;
@@ -249,4 +284,31 @@ const markAsDone = async (id) => {
     transform: translateY(0);
   }
 }
+.custom-pagination {
+  direction: rtl; /* لضبط الاتجاه حسب اللغة */
+  justify-content: center;
+  gap: 6px;
+}
+
+.custom-pagination .v-pagination__item {
+  background-color: #e3f2fd; /* أزرق فاتح */
+  color: #1565c0; /* أزرق متوسط */
+  font-weight: bold;
+  border-radius: 12px;
+  padding: 8px 12px;
+  transition: all 0.3s ease;
+}
+
+.custom-pagination .v-pagination__item--is-active {
+  background-color: #1565c0 !important; /* أزرق غامق عند التحديد */
+  color: white !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.custom-pagination .v-pagination__more {
+  color: #90caf9;
+  font-weight: bold;
+}
+
+
 </style>

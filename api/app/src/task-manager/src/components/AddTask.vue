@@ -51,18 +51,11 @@
               class="mb-5"
               required
             />
-
-            <v-btn
-              type="submit"
-              color="success"
-              block
-              size="large"
-              rounded
-              elevation="2"
-              class="text-white"
-            >
-              💾 حفظ المهمة
-            </v-btn>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text color="error" @click="internalDialog = false">إلغاء</v-btn>
+              <v-btn color="primary" type="submit" rounded elevation="2">💾 حفظ المهمة</v-btn>
+            </v-card-actions>
           </v-form>
         </v-card-text>
       </v-card>

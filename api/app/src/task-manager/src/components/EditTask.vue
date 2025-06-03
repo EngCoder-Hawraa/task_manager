@@ -3,59 +3,92 @@
     <v-btn
       color="info"
       size="small"
-      variant="outlined"
+      variant="tonal"
       @click="openEditDialog(task)"
     >
       ✏ تعديل
     </v-btn>
 
-    <v-dialog v-model="editDialog" max-width="600">
-      <v-card>
-        <v-card-title class="text-h6 text-center">✏ تعديل المهمة</v-card-title>
-        <v-divider class="my-3" />
-        <v-card-text>
-          <v-form @submit.prevent="submitEditTask" ref="editFormRef">
+    <v-dialog
+      v-model="editDialog"
+      max-width="600"
+      transition="dialog-bottom-transition"
+      persistent
+      scrim="rgba(0,0,0,0.5)"
+    >
+      <v-card class="rounded-xl elevation-10">
+        <v-card-title class="text-h6 text-center d-flex align-center justify-center">
+          <v-icon color="primary" class="me-2">mdi-pencil</v-icon>
+          ✏ تعديل المهمة
+        </v-card-title>
+
+        <v-divider class="my-2" />
+
+        <v-card-text class="pt-0">
+          <v-form @submit.prevent="submitEditTask" ref="editFormRef" validate-on="submit lazy">
             <v-text-field
               v-model="editTitle"
-              label="العنوان"
+              label="✏️ العنوان"
               :error-messages="editTitleError"
+              variant="outlined"
+              color="primary"
+              rounded
+              class="mb-4"
               required
-              class="mb-3"
             />
+
             <v-textarea
               v-model="editDescription"
-              label="الوصف"
+              label="📝 الوصف"
               :error-messages="editDescriptionError"
-              required
+              variant="outlined"
+              color="primary"
+              rounded
               rows="3"
-              class="mb-3"
+              class="mb-4"
+              required
             />
+
             <v-text-field
               v-model="editDueDate"
-              label="تاريخ الاستحقاق"
+              label="📅 تاريخ الاستحقاق"
               type="date"
               :error-messages="editDueDateError"
-              required
+              variant="outlined"
+              color="primary"
+              rounded
               class="mb-4"
+              required
             />
+
             <v-select
               v-model="editStatus"
               :items="statusOptions"
               label="الحالة"
-              required
+              variant="outlined"
+              color="primary"
+              rounded
               class="mb-4"
+              required
             />
+
             <v-select
               v-model="editPriority"
               :items="priorityOptions"
               label="الأولوية"
+              variant="outlined"
+              color="primary"
+              rounded
+              class="mb-5"
               required
-              class="mb-4"
             />
+
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn text @click="editDialog = false">إلغاء</v-btn>
-              <v-btn color="primary" type="submit">حفظ التعديل</v-btn>
+              <v-btn text color="error" @click="editDialog = false">إلغاء</v-btn>
+              <v-btn color="primary" type="submit" rounded elevation="2">
+                💾 حفظ التعديل
+              </v-btn>
             </v-card-actions>
           </v-form>
         </v-card-text>
@@ -194,3 +227,22 @@ const submitEditTask = async () => {
   }
 }
 </script>
+<style scoped>
+.v-dialog > .v-overlay__content {
+  transition: all 0.35s ease-in-out;
+}
+
+.v-card-title {
+  font-family: 'Cairo', sans-serif;
+  font-weight: 700;
+}
+
+.v-card-text {
+  font-family: 'Cairo', sans-serif;
+}
+
+.v-text-field input,
+.v-textarea textarea {
+  background-color: #f9f9f9;
+}
+</style>

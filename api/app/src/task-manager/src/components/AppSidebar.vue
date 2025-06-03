@@ -6,10 +6,7 @@
     color="primary"
     theme="dark"
     width="320"
-    :mini-variant="mini"
     class="custom-drawer elevation-6"
-    @mouseenter="mini = false"
-    @mouseleave="mini = true"
   >
     <v-list nav dense>
       <!-- حساب المستخدم -->
@@ -33,7 +30,6 @@
             <v-list-item
               v-bind="props"
               class="text-white"
-              :title="mini ? section.title : ''"
             >
                 <v-list-item-title class="font-weight-bold">{{ section.title }}</v-list-item-title>
             </v-list-item>
@@ -54,7 +50,6 @@
                 class="mx-4 my-1 rounded"
                 link
                 @click="handleMenuClick(item)"
-                :title="mini ? item.title : ''"
                 :active="activeRoute === item.route"
                 :class="{ 'active-item': activeRoute === item.route }"
               >
@@ -73,28 +68,16 @@
         class="mx-5 mt-6 logout"
         link
         @click="logout"
-        :title="mini ? 'تسجيل الخروج' : ''"
         density="compact"
       >
         <template #prepend>
           <v-icon color="lighten-1" class="me-2">mdi-logout</v-icon>
         </template>
         <template #default>
-          <span v-if="!mini" class="font-weight-bold text-white">تسجيل الخروج</span>
+          <span class="font-weight-bold text-white">تسجيل الخروج</span>
         </template>
       </v-list-item>
     </v-list>
-
-    <!-- زر تصغير/تكبير السايدبار -->
-    <v-btn
-      icon
-      class="toggle-mini-btn"
-      @click="mini = !mini"
-      :aria-label="mini ? 'تكبير السايدبار' : 'تصغير السايدبار'"
-      :title="mini ? 'تكبير السايدبار' : 'تصغير السايدبار'"
-    >
-      <v-icon color="white">{{ mini ? 'mdi-chevron-left' : 'mdi-chevron-right' }}</v-icon>
-    </v-btn>
   </v-navigation-drawer>
 </template>
 
@@ -109,7 +92,6 @@ const router = useRouter()
 const authStore = useAuthStore()
 const taskStore = useTaskStore()
 
-const mini = ref(false)
 const drawer = ref(true)
 
 function toggleDrawer() {

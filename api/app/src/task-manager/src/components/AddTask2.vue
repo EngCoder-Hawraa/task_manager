@@ -1,70 +1,92 @@
 <template>
   <!-- ✅ رأس الصفحة -->
   <AppHeader @toggle-sidebar="toggleDrawer" />
-
-  <!-- ✅ السايدبار -->
   <AppSidebar ref="sidebarRef" />
-  <v-container class="py-4 mt-6">
+
+  <v-container class="py-10">
     <transition name="fade-slide" appear>
-      <v-card class="mx-auto">
-        <v-card-title class="text-h6 text-center">➕ إضافة مهمة جديدة</v-card-title>
-        <v-divider class="my-3"></v-divider>
+      <v-card class="mx-auto px-4 pt-6 pb-8" elevation="10" rounded="xl">
+        <!-- ✅ عنوان الصفحة -->
+        <div class="text-center mb-6">
+          <h2 class="text-h5 font-weight-bold mt-2" style="font-family: 'Cairo', sans-serif;">
+            ➕ إضافة مهمة جديدة
+          </h2>
+        </div>
 
-        <v-card-text>
-          <v-form @submit.prevent="submitTask" ref="formRef">
-            <v-text-field
-              v-model="title"
-              label="العنوان"
-              :error-messages="titleError"
-              required
-              class="mb-3"
-            />
+        <!-- ✅ النموذج -->
+        <v-form @submit.prevent="submitTask" ref="formRef">
+          <v-text-field
+            v-model="title"
+            label="✏️ العنوان"
+            :error-messages="titleError"
+            variant="outlined"
+            density="comfortable"
+            rounded="xl"
+            class="mb-4"
+            color="primary"
+            required
+          />
 
-            <v-textarea
-              v-model="description"
-              label="الوصف"
-              :error-messages="descriptionError"
-              required
-              rows="3"
-              class="mb-3"
-            />
+          <v-textarea
+            v-model="description"
+            label="📝 الوصف"
+            :error-messages="descriptionError"
+            variant="outlined"
+            density="comfortable"
+            rows="4"
+            rounded="xl"
+            class="mb-4"
+            color="primary"
+            required
+          />
 
-            <v-text-field
-              v-model="due_date"
-              label="تاريخ الاستحقاق"
-              type="date"
-              :error-messages="dueDateError"
-              required
-              class="mb-4"
-            />
+          <v-text-field
+            v-model="due_date"
+            label="📅 تاريخ الاستحقاق"
+            type="date"
+            :error-messages="dueDateError"
+            variant="outlined"
+            density="comfortable"
+            rounded="xl"
+            class="mb-4"
+            color="primary"
+            required
+          />
 
-            <!-- 🟢 حقل الحالة -->
-            <v-select
-              v-model="status"
-              :items="statusOptions"
-              label="الحالة"
-              required
-              class="mb-4"
-            />
+          <v-select
+            v-model="status"
+            :items="statusOptions"
+            label="الحالة"
+            variant="outlined"
+            density="comfortable"
+            rounded="xl"
+            class="mb-4"
+            color="primary"
+            required
+          />
 
-            <!-- 🔵 حقل الأولوية -->
-            <v-select
-              v-model="priority"
-              :items="priorityOptions"
-              label="الأولوية"
-              required
-              class="mb-4"
-            />
+          <v-select
+            v-model="priority"
+            :items="priorityOptions"
+            label="الأولوية"
+            variant="outlined"
+            density="comfortable"
+            rounded="xl"
+            class="mb-6"
+            color="primary"
+            required
+          />
 
-            <v-btn type="submit" color="success" block>
-              حفظ المهمة
-            </v-btn>
-          </v-form>
-        </v-card-text>
+          <!-- ✅ زر الحفظ -->
+          <v-btn type="submit" block color="primary" rounded="xl" class="text-white py-6" elevation="3">
+            💾 حفظ المهمة
+          </v-btn>
+        </v-form>
       </v-card>
     </transition>
   </v-container>
 </template>
+
 
 <script setup>
 import { ref } from 'vue'
@@ -156,7 +178,7 @@ function toggleDrawer() {
   }
 }
 </script>
-<style>
+<style scoped>
 .fade-slide-enter-active {
   transition: all 0.6s ease;
 }
@@ -171,4 +193,15 @@ function toggleDrawer() {
   transform: translateY(0);
 }
 
+.v-card {
+  background-color: #f9fbfd; /* خلفية فاتحة عصرية */
+  border: 1px solid #e0e6ed;
+}
+
+.v-btn {
+  font-family: 'Cairo', sans-serif;
+  font-weight: bold;
+  font-size: 1rem;
+}
 </style>
+
