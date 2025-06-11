@@ -52,19 +52,30 @@
         />
       </v-col>
     </v-row>
-
+<!--    <pre>عدد المهام: {{ filteredTasks.length }}</pre>-->
     <v-data-table
-      :headers="headers"
       :items="filteredTasks"
-      item-value="id"
       class="elevation-1"
       dense
       :loading="loading"
       loading-text="جارٍ التحميل..."
+      item-value="id"
       show-header
-      disable-pagination
       hide-default-footer
     >
+    </v-data-table>
+    <v-data-table
+      :headers="headers"
+      :items="filteredTasks"
+      class="elevation-1"
+      dense
+      :loading="loading"
+      loading-text="جارٍ التحميل..."
+      item-value="id"
+      show-header
+      hide-default-footer
+    >
+      <!-- المسؤولون -->
       <template #item.assigned_to="{ item }">
         <v-avatar
           v-for="member in item.assigned_to"
@@ -77,18 +88,20 @@
         </v-avatar>
       </template>
 
+      <!-- الإجراءات -->
       <template #item.actions="{ item }">
-        <v-btn icon @click="viewTask(item)" :title="'عرض ' + item.title">
+        <v-btn icon @click="viewTask(item)">
           <v-icon>mdi-eye</v-icon>
         </v-btn>
-        <v-btn icon color="primary" @click="editTask(item)" :title="'تعديل ' + item.title">
+        <v-btn icon color="primary" @click="editTask(item)">
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
-        <v-btn icon color="error" @click="deleteTask(item.id)" :title="'حذف ' + item.title">
+        <v-btn icon color="error" @click="deleteTask(item.id)">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
       </template>
     </v-data-table>
+
   </v-container>
 </template>
 
@@ -109,7 +122,7 @@ const priorityFilter = ref('الكل')
 
 // قائمة المستخدمين - يمكن تعديلها لجلبها من API
 const users = ref([
-  { id: 1, name: 'أحمد', avatar: 'https://i.pravatar.cc/150?img=1' },
+  { id: 1, name: 'حوراء', avatar: 'https://i.pravatar.cc/150?img=1' },
   { id: 2, name: 'سارة', avatar: 'https://i.pravatar.cc/150?img=2' },
   { id: 3, name: 'حسن', avatar: 'https://i.pravatar.cc/150?img=3' }
 ])
@@ -152,14 +165,15 @@ const filteredTasks = computed(() => {
 })
 
 // تعريف أعمدة الجدول
-const headers = [
+const headers = ref([
   { text: 'العنوان', value: 'title' },
   { text: 'الوصف', value: 'description' },
   { text: 'الحالة', value: 'status' },
   { text: 'الأولوية', value: 'priority' },
   { text: 'المسؤولون', value: 'assigned_to' },
   { text: 'الإجراءات', value: 'actions', sortable: false }
-]
+])
+
 
 // دوال التعامل مع المهام
 const viewTask = (task) => {

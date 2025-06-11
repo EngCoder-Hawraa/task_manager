@@ -28,6 +28,7 @@ export const useTaskStore = defineStore('task', {
 
         // ✅ تحقق من أن res.data عبارة عن مصفوفة
         this.tasks = Array.isArray(res.data) ? res.data : [];
+        // console.log(res.data)
       } catch (err) {
         this.error = err.message;
         this.tasks = [];
