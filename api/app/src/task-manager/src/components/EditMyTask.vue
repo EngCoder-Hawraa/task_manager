@@ -116,7 +116,7 @@
 </template>
 
 <script setup>
-import { ref, watch, defineEmits, defineProps } from 'vue'
+import { ref, watch } from 'vue'
 import { useTaskStore } from '@/stores/taskStore'
 import Swal from 'sweetalert2'
 

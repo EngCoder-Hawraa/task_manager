@@ -9,7 +9,7 @@ class TaskController extends Controller
 
     public function __construct()
     {
-        $this->taskModel = new TaskController();
+        $this->taskModel = new Task();
     }
 
     // ✅ توثيق المستخدم عن طريق JWT
@@ -44,6 +44,16 @@ class TaskController extends Controller
         return $decoded->user_id;
     }
 
+    public function Tasks()
+    {
+        header('Content-Type: application/json');
+
+        $status = $_GET['status'] ?? null;
+        $priority = $_GET['priority'] ?? null;
+
+        $tasks = $this->taskModel->getGroupTasks($status, $priority);
+        echo json_encode($tasks);
+    }
 
     // ✅ جلب كل المهام للمستخدم
     public function index()
@@ -74,14 +84,14 @@ class TaskController extends Controller
             return;
         }
 
-        // تحقق من الطول كإضافة احترافية
         if (strlen($data['title']) > 255) {
             http_response_code(400);
             echo json_encode(['message' => 'العنوان طويل جدًا']);
             return;
         }
 
-        $result = $this->taskModel->createTask(
+        // 1. إنشاء المهمة
+        $taskId = $this->taskModel->createTask(
             $userId,
             $data['title'],
             $data['description'],
@@ -90,8 +100,22 @@ class TaskController extends Controller
             $data['due_date']
         );
 
-        echo json_encode(['success' => $result]);
+        // 2. إذا تم إنشاؤها بنجاح، أضف المستخدمين المرتبطين
+        if (!empty($data['assigned_users']) && is_array($data['assigned_users'])) {
+            foreach ($data['assigned_users'] as $assigned) {
+                if (!empty($assigned['user_id'])) {
+                    $assignedUserId = $assigned['user_id'];
+                    $usedAt = !empty($assigned['used_at']) ? $assigned['used_at'] : date('Y-m-d H:i:s');
+
+                    // نفترض أن لديك دالة createTaskUser داخل taskModel أو model آخر
+                    $this->taskModel->assignUserToTask($taskId, $assignedUserId, $usedAt);
+                }
+            }
+        }
+
+        echo json_encode(['success' => true, 'task_id' => $taskId]);
     }
+
 
     // ✅ جلب مهمة واحدة
     public function show($id)

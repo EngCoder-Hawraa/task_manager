@@ -4,7 +4,7 @@ import axios from 'axios'
 // تعيين الـ base URL لمرة واحدة فقط (لاحظ حذف "TaskController" في المسار)
 axios.defaults.baseURL = 'http://localhost/task_manager/api/public/TaskController'
 
-export const useTaskStore = defineStore('tasks', {
+export const useTaskStore = defineStore('task', {
   state: () => ({
     tasks: [],
     selectedTask: null,
@@ -18,7 +18,21 @@ export const useTaskStore = defineStore('tasks', {
       this.token = token
       localStorage.setItem('token', token)
     },
+    async fetchAllTasks(status = null, priority = null) {
+      try {
+        const params = {};
+        if (status && status !== 'الكل') params.status = status;
+        if (priority && priority !== 'الكل') params.priority = priority;
 
+        const res = await axios.get('/Tasks', { params });
+
+        // ✅ تحقق من أن res.data عبارة عن مصفوفة
+        this.tasks = Array.isArray(res.data) ? res.data : [];
+      } catch (err) {
+        this.error = err.message;
+        this.tasks = [];
+      }
+    },
     async fetchTasks() {
       this.loading = true
       this.error = null
